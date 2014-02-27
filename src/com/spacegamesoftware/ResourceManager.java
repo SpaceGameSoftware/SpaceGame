@@ -45,8 +45,7 @@ public class ResourceManager {
 		loadMenuAudio();
 	}
 	
-	public void loadGameResources()
-	{
+	public void loadGameResources() {
 		loadGameGraphics();
 		loadGameFonts();
 		loadGameAudio();
