@@ -14,13 +14,18 @@ import com.spacegamesoftware.SceneManager.SceneType;
 public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener {
 
 	private MenuScene menuChildScene;
+	private Sprite menuBackground;
 	private final int MENU_NEWGAME = 0;
-	private final int MENU_OPTIONS = 1;
+	private final int MENU_PERKS = 1;
+	private final int MENU_ACHIEVMENTS = 2;
+	private final int MENU_HIGHSCORE = 3;
+	private final int MENU_SETTINGS = 4;
 	
 	@Override
 	public void createScene() {
 		createBackground();
 		createMenuChildScene();
+		resourceManager.music.play();
 	}
 
 	@Override
@@ -40,7 +45,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	}
 	
 	private void createBackground() {
-		attachChild(new Sprite(1460, 540, resourceManager.menuBackgroundRegion, vbom) {
+		menuBackground = new Sprite(0, 0, resourceManager.menuBackgroundRegion, vbom) {
 			
 			@Override
 			protected void preDraw(GLState glState, Camera camera) {
@@ -48,21 +53,38 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 				glState.enableDither();
 			}
 			
-		});
+		};
+		
+		menuBackground.setScale(14.0f);
+		
+		attachChild(menuBackground);
 	}
 	
 	private void createMenuChildScene() {
 		menuChildScene = new MenuScene(camera);
-		menuChildScene.setPosition(0,0);
+		menuChildScene.setPosition(0, 0);
 		
-		final IMenuItem newGameMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_NEWGAME, resourceManager.newGameRegion, vbom), 1.0f, 1);
+		final IMenuItem newGameMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_NEWGAME, resourceManager.newGameRegion, vbom), 0.7f, 0.75f);
+		final IMenuItem perksMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PERKS, resourceManager.perksButtonRegion, vbom), 0.7f, 0.75f);
+		final IMenuItem achievementsMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_ACHIEVMENTS, resourceManager.achievementsButtonRegion, vbom),
+				0.7f, 0.75f);
+		final IMenuItem highscoreMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_HIGHSCORE, resourceManager.highscoreButtonRegion, vbom), 0.7f, 0.75f);
+		final IMenuItem settingsMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_SETTINGS, resourceManager.settingsButtonRegion, vbom), 0.7f, 0.75f);
 		
 		menuChildScene.addMenuItem(newGameMenuItem);
+		menuChildScene.addMenuItem(perksMenuItem);
+		menuChildScene.addMenuItem(achievementsMenuItem);
+		menuChildScene.addMenuItem(highscoreMenuItem);
+		menuChildScene.addMenuItem(settingsMenuItem);
 		
 		menuChildScene.buildAnimations();
 		menuChildScene.setBackgroundEnabled(false);
 		
-		newGameMenuItem.setPosition(newGameMenuItem.getX(), newGameMenuItem.getY() + 10);
+		newGameMenuItem.setPosition(newGameMenuItem.getX(), newGameMenuItem.getY());
+		perksMenuItem.setPosition(perksMenuItem.getX(), perksMenuItem.getY());
+		achievementsMenuItem.setPosition(achievementsMenuItem.getX(), achievementsMenuItem.getY());
+		highscoreMenuItem.setPosition(highscoreMenuItem.getX(), highscoreMenuItem.getY());
+		settingsMenuItem.setPosition(settingsMenuItem.getX(), settingsMenuItem.getY());
 		
 		menuChildScene.setOnMenuItemClickListener(this);
 		
@@ -73,6 +95,14 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	public boolean onMenuItemClicked(MenuScene menuScene, IMenuItem menuItem, float menuItemLocalX, float menuItemLocalY) {
 		switch (menuItem.getID()) {
 		case MENU_NEWGAME:
+			return true;
+		case MENU_PERKS:
+			return true;
+		case MENU_ACHIEVMENTS:
+			return true;
+		case MENU_HIGHSCORE:
+			return true;
+		case MENU_SETTINGS:
 			return true;
 		default:
 			return false;

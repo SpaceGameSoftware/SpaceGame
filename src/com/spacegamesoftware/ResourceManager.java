@@ -1,5 +1,9 @@
 package com.spacegamesoftware;
 
+import java.io.IOException;
+
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.texture.TextureOptions;
@@ -24,6 +28,12 @@ public class ResourceManager {
 	public ITextureRegion splashRegion;
 	public ITextureRegion menuBackgroundRegion;
 	public ITextureRegion newGameRegion;
+	public ITextureRegion perksButtonRegion;
+	public ITextureRegion achievementsButtonRegion;
+	public ITextureRegion highscoreButtonRegion;
+	public ITextureRegion settingsButtonRegion;
+	
+	public Music music;
 	
 	private BitmapTextureAtlas splashTextureAtlas;
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
@@ -65,9 +75,13 @@ public class ResourceManager {
 	
 	private void loadMenuGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
-		menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+		menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
 		menuBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "menu_background.png");
 		newGameRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "new_game.png");
+		perksButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "perks.png");
+		achievementsButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "achievements.png");
+		highscoreButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "high_scores.png");
+		settingsButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "settings.png");
 		
 		try {
 			this.menuTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
@@ -78,7 +92,14 @@ public class ResourceManager {
 	}
 	
 	private void loadMenuAudio() {
+		MusicFactory.setAssetBasePath("mfx/");
 		
+		try {
+			music = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity, "MaxNRG-Prometheus.ogg");
+			music.setLooping(true);
+		} catch (final IOException e) {
+			Debug.e(e);
+		}
 	}
 	
 	private void loadGameGraphics() {
