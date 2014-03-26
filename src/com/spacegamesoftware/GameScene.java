@@ -1,16 +1,22 @@
 package com.spacegamesoftware;
 
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.entity.scene.IOnSceneTouchListener;
+import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.scene.menu.MenuScene;
+import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
+import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.HorizontalAlign;
 import org.andengine.util.color.Color;
 
 import com.spacegamesoftware.SceneManager.SceneType;
 
-public class GameScene extends BaseScene {
+public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	
 	private HUD gameHUD;
 	private Text scoreText;
@@ -26,6 +32,7 @@ public class GameScene extends BaseScene {
 		logic.setScoreText(scoreText);
 		createSpaceship();
 		logic.setSpaceship(spaceship);
+		this.setOnSceneTouchListener(this);
 	}
 
 	@Override
@@ -66,6 +73,25 @@ public class GameScene extends BaseScene {
 		gameHUD.attachChild(scoreText);
 		
 		camera.setHUD(gameHUD);
+	}
+
+	@Override
+	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+		// TODO Auto-generated method stub
+		if(pSceneTouchEvent.isActionDown()) {
+			logic.reset();
+			return true;
+		}
+		else if(pSceneTouchEvent.isActionUp()) {
+			logic.reset();
+			return true;
+		}
+		else if(pSceneTouchEvent.isActionMove()) {
+			logic.reset();
+			return true;
+		}
+		
+		return false;
 	}
 
 }
