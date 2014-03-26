@@ -6,6 +6,9 @@ import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -16,6 +19,8 @@ import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
+
+import android.graphics.Color;
 
 public class ResourceManager {
 	
@@ -32,11 +37,16 @@ public class ResourceManager {
 	public ITextureRegion achievementsButtonRegion;
 	public ITextureRegion highscoreButtonRegion;
 	public ITextureRegion settingsButtonRegion;
+	public ITextureRegion spaceshipRegion;
+	public ITextureRegion asteroidRegion;
 	
 	public Music music;
 	
+	public Font font;
+	
 	private BitmapTextureAtlas splashTextureAtlas;
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
+	private BuildableBitmapTextureAtlas gameTextureAtlas;
 	
 	public static void prepareManager(Engine engine, MainActivity activity, Camera camera, VertexBufferObjectManager vbom) {
 		getInstance().engine = engine;
@@ -52,6 +62,7 @@ public class ResourceManager {
 	
 	public void loadMenuResources() {
 		loadMenuGraphics();
+		loadMenuFonts();
 		loadMenuAudio();
 	}
 	
@@ -91,6 +102,13 @@ public class ResourceManager {
 		}
 	}
 	
+	private void loadMenuFonts() {
+		FontFactory.setAssetBasePath("font/");
+		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 50.0f, true, Color.WHITE, 2.0f, Color.BLACK);
+		font.load();
+	}
+	
 	private void loadMenuAudio() {
 		MusicFactory.setAssetBasePath("mfx/");
 		
@@ -103,11 +121,20 @@ public class ResourceManager {
 	}
 	
 	private void loadGameGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
+		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+		spaceshipRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "spaceship.png");
+		asteroidRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "asteroid.png");
 		
+		try {
+			this.gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+			this.gameTextureAtlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
 	}
 	
 	private void loadGameFonts() {
-		
 	}
 	
 	private void loadGameAudio() {
