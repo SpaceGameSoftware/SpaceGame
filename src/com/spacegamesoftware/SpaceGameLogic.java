@@ -73,7 +73,8 @@ public class SpaceGameLogic implements IUpdateHandler {
 		float x = (float) rand.nextInt(MainActivity.CAMERA_WIDTH);
 		Asteroid asteroid = new Asteroid(x, 0.0f, ResourceManager.getInstance().asteroidRegion,
 				ResourceManager.getInstance().vbom);
-		asteroid.setVelocity(new Vector(0.0f, 1.0f));
+		float dy = (rand.nextFloat() * 4) + 1.0f;
+		asteroid.setVelocity(new Vector(0.0f, dy));
 		scene.attachChild(asteroid);
 		return asteroid;
 	}
