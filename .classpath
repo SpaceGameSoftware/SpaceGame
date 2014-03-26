@@ -5,5 +5,7 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/AndEngine"/>
+	<classpathentry kind="lib" path="/home/johnathan/adt-bundle-linux-x86_64-20130522/sdk/platforms/android-19/android.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

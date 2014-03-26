@@ -38,6 +38,12 @@ public class SceneManager {
 		disposeSplashScene();
 	}
 	
+	public void createGameScene() {
+		ResourceManager.getInstance().loadGameResources();
+		gameScene = new GameScene();
+		setScene(gameScene);
+	}
+	
 	public void setScene(BaseScene scene) {
 		engine.setScene(scene);
 		currentScene = scene;
