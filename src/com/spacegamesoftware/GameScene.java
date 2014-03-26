@@ -19,12 +19,13 @@ public class GameScene extends BaseScene {
 
 	@Override
 	public void createScene() {
-		logic = new SpaceGameLogic();
+		logic = new SpaceGameLogic(this);
 		registerUpdateHandler(logic);
 		createBackground();
 		createHUD();
 		logic.setScoreText(scoreText);
 		createSpaceship();
+		logic.setSpaceship(spaceship);
 	}
 
 	@Override
