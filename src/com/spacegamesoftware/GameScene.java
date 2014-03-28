@@ -20,7 +20,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	
 	private HUD gameHUD;
 	private Text scoreText;
-	private Sprite spaceship;
+	private Text coinsText;
+	private Text distanceText;
+	private Spaceship spaceship;
 	private SpaceGameLogic logic;
 
 	@Override
@@ -30,9 +32,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		createBackground();
 		createHUD();
 		logic.setScoreText(scoreText);
+		logic.setCoinsText(coinsText);
+		logic.setDistanceText(distanceText);
 		createSpaceship();
 		logic.setSpaceship(spaceship);
-		this.setOnSceneTouchListener(this);
+		setOnSceneTouchListener(spaceship);
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private void createSpaceship() {
 		int x = MainActivity.CAMERA_WIDTH / 2;
 		int y = MainActivity.CAMERA_HEIGHT - MainActivity.CAMERA_HEIGHT / 4;
-		spaceship = new Sprite(x, y, resourceManager.spaceshipRegion, vbom);
+		spaceship = new Spaceship(x, y, resourceManager.spaceshipRegion, vbom);
 		attachChild(spaceship);
 	}
 	
@@ -68,26 +72,35 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		gameHUD = new HUD();
 		
 		scoreText = new Text(20, 20, resourceManager.font, "Score: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+		coinsText = new Text(20, 80, resourceManager.font, "Coins: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+		distanceText = new Text(20, 140, resourceManager.font, "Distance: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
 		scoreText.setSkewCenter(0, 0);
+		coinsText.setSkewCenter(0, 0);
+		distanceText.setSkewCenter(0, 0);
 		scoreText.setText("Score: 0");
+		coinsText.setText("Coins: 0");
+		distanceText.setText("Distance: 0");
 		gameHUD.attachChild(scoreText);
+		gameHUD.attachChild(coinsText);
+		gameHUD.attachChild(distanceText);
 		
 		camera.setHUD(gameHUD);
 	}
 
 	@Override
-	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-		// TODO Auto-generated method stub
-		if(pSceneTouchEvent.isActionDown()) {
-			logic.reset();
+	public boolean onSceneTouchEvent(Scene pScene, TouchEvent touchEvent) {
+		
+		float x = touchEvent.getX();
+		float y = touchEvent.getY();
+		
+		if(touchEvent.isActionDown()) {
 			return true;
 		}
-		else if(pSceneTouchEvent.isActionUp()) {
-			logic.reset();
+		else if(touchEvent.isActionUp()) {
 			return true;
 		}
-		else if(pSceneTouchEvent.isActionMove()) {
-			logic.reset();
+		else if(touchEvent.isActionMove()) {
+			spaceship.setPosition(x,spaceship.getY());
 			return true;
 		}
 		
