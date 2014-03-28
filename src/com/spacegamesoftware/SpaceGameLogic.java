@@ -33,9 +33,11 @@ public class SpaceGameLogic implements IUpdateHandler {
 		rand = new Random();
 	}
 	
+	private float timeSinceDistance = 0;
 
 	@Override
 	public void onUpdate(float secondsElapsed) {
+		timeSinceDistance += secondsElapsed;
 		updateScore();
 		updateDistance();
 		updateAsteroids();
@@ -65,8 +67,11 @@ public class SpaceGameLogic implements IUpdateHandler {
 	}
 	
 	private void updateDistance() {
-		distance += 1;
-		distanceText.setText("Distance: " + distance);
+		if (timeSinceDistance > 1.0 / 6.0) {
+			distance += 1;
+			distanceText.setText("Distance: " + distance);
+			timeSinceDistance = 0;
+		}
 	}
 	
 	private void updateScore() {

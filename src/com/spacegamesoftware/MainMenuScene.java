@@ -80,11 +80,13 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 		menuChildScene.buildAnimations();
 		menuChildScene.setBackgroundEnabled(false);
 		
-		newGameMenuItem.setPosition(newGameMenuItem.getX(), newGameMenuItem.getY());
-		perksMenuItem.setPosition(perksMenuItem.getX(), perksMenuItem.getY());
-		achievementsMenuItem.setPosition(achievementsMenuItem.getX(), achievementsMenuItem.getY());
-		highscoreMenuItem.setPosition(highscoreMenuItem.getX(), highscoreMenuItem.getY());
-		settingsMenuItem.setPosition(settingsMenuItem.getX(), settingsMenuItem.getY());
+		float x = 80;
+		
+		newGameMenuItem.setPosition(x, newGameMenuItem.getY());
+		perksMenuItem.setPosition(x, perksMenuItem.getY());
+		achievementsMenuItem.setPosition(x, achievementsMenuItem.getY());
+		highscoreMenuItem.setPosition(x, highscoreMenuItem.getY());
+		settingsMenuItem.setPosition(x, settingsMenuItem.getY());
 		
 		menuChildScene.setOnMenuItemClickListener(this);
 		
