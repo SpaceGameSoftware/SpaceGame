@@ -1,6 +1,7 @@
 package com.spacegamesoftware;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -14,8 +15,11 @@ public class SpaceGameLogic implements IUpdateHandler {
 	private int distance;
 	private int coins;
 	private Text scoreText;
+	private Text coinsText;
+	private Text distanceText;
 	private Sprite spaceship;
 	private List<Asteroid> asteroids;
+	private List<Coin> coinList;
 	private BaseScene scene;
 	private Random rand;
 	
@@ -25,6 +29,7 @@ public class SpaceGameLogic implements IUpdateHandler {
 		distance = 0;
 		coins = 0;
 		asteroids = new ArrayList<Asteroid>();
+		coinList = new ArrayList<Coin>();
 		rand = new Random();
 	}
 	
@@ -34,6 +39,7 @@ public class SpaceGameLogic implements IUpdateHandler {
 		updateScore();
 		updateDistance();
 		updateAsteroids();
+		updateCoins();
 	}
 
 	@Override
@@ -46,26 +52,46 @@ public class SpaceGameLogic implements IUpdateHandler {
 		scoreText = text;
 	}
 	
+	public void setCoinsText(Text text) {
+		coinsText = text;
+	}
+	
+	public void setDistanceText(Text text) {
+		distanceText = text;
+	}
+	
 	public void setSpaceship(Sprite spaceship) {
 		this.spaceship = spaceship;
 	}
 	
 	private void updateDistance() {
 		distance += 1;
+		distanceText.setText("Distance: " + distance);
 	}
 	
 	private void updateScore() {
-		score = distance + coins;
+		score = distance + 5 * coins;
 		scoreText.setText("Score: " + score);
 	}
 	
 	private void updateAsteroids() {
-		if (rand.nextInt(100) < 2) {
+		if (rand.nextInt(100) < 4) {
 			asteroids.add(createAsteroid());
 		}
 		
-		for (Asteroid asteroid : asteroids) {
-			asteroid.update();
+		Iterator<Asteroid> iter = asteroids.iterator();
+		while (iter.hasNext()) {
+			Asteroid asteroid = iter.next();
+			
+			if (asteroid.getY() > MainActivity.CAMERA_HEIGHT){
+				scene.detachChild(asteroid); // remove asteroids that are no longer visible
+				iter.remove();
+			} else {
+				if (spaceship.collidesWith(asteroid)) {
+					onSpaceshipHit();
+				}
+				asteroid.update();
+			}
 		}
 	}
 	
@@ -73,10 +99,48 @@ public class SpaceGameLogic implements IUpdateHandler {
 		float x = (float) rand.nextInt(MainActivity.CAMERA_WIDTH);
 		Asteroid asteroid = new Asteroid(x, 0.0f, ResourceManager.getInstance().asteroidRegion,
 				ResourceManager.getInstance().vbom);
-		float dy = (rand.nextFloat() * 4) + 1.0f;
+		float dy = (rand.nextFloat() * 6) + 1.0f;
 		asteroid.setVelocity(new Vector(0.0f, dy));
 		scene.attachChild(asteroid);
 		return asteroid;
+	}
+	
+	private void updateCoins() {
+		if (rand.nextInt(100) < 3) {
+			coinList.add(createCoin());
+		}
+		
+		Iterator<Coin> iter = coinList.iterator();
+		while (iter.hasNext()) {
+			Coin coin = iter.next();
+			
+			if (coin.getY() > MainActivity.CAMERA_HEIGHT) {
+				scene.detachChild(coin);
+				iter.remove();
+			} else {
+				if (spaceship.collidesWith(coin)) {
+					coins += coin.getValue();
+					coinsText.setText("Coins: " + coins);
+					scene.detachChild(coin);
+					iter.remove();
+				} else {
+					coin.update();
+				}
+			}
+		}
+	}
+	
+	private Coin createCoin() {
+		float x = (float) rand.nextInt(MainActivity.CAMERA_WIDTH);
+		Coin coin = new Coin(x, 0.0f, ResourceManager.getInstance().coinRegion,ResourceManager.getInstance().vbom);
+		coin.setVelocity(new Vector(0.0f, 6.5f));
+		coin.setValue(1);
+		scene.attachChild(coin);
+		return coin;
+	}
+	
+	private void onSpaceshipHit() {
+		scene.detachChild(spaceship);
 	}
 
 }

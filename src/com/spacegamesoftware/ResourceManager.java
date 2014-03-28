@@ -39,6 +39,7 @@ public class ResourceManager {
 	public ITextureRegion settingsButtonRegion;
 	public ITextureRegion spaceshipRegion;
 	public ITextureRegion asteroidRegion;
+	public ITextureRegion coinRegion;
 	
 	public Music music;
 	
@@ -125,6 +126,7 @@ public class ResourceManager {
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 		spaceshipRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "spaceship.png");
 		asteroidRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "asteroid.png");
+		coinRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin.png");
 		
 		try {
 			this.gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
