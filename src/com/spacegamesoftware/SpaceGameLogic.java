@@ -38,9 +38,7 @@ public class SpaceGameLogic implements IUpdateHandler {
 
 	@Override
 	public void reset() {
-		score = 0;
-		distance = 0;
-		coins = 0;
+		
 	}
 	
 	
