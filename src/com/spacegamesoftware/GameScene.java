@@ -52,8 +52,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 
 	@Override
 	public void disposeScene() {
-		// TODO Auto-generated method stub
-		
+		spaceship.detachSelf();
+		spaceship.dispose();
+		scoreText.detachSelf();
+		scoreText.dispose();
+		coinsText.detachSelf();
+		coinsText.dispose();
+		distanceText.detachSelf();
+		distanceText.dispose();
+		gameHUD.detachSelf();
+		gameHUD.dispose();
+		this.detachSelf();
+		this.dispose();
 	}
 	
 	

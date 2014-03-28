@@ -140,7 +140,8 @@ public class SpaceGameLogic implements IUpdateHandler {
 	}
 	
 	private void onSpaceshipHit() {
-		scene.detachChild(spaceship);
+		scene.disposeScene();
+		SceneManager.getInstance().setScene(SceneManager.SceneType.SCENE_MENU);
 	}
 
 }
