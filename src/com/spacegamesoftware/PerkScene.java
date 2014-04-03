@@ -66,7 +66,7 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 		perkChildScene = new MenuScene(camera);
 		perkChildScene.setPosition(0, 0);
 
-		coinsText = new Text(20, 20, resourceManager.font, "Coins: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+		coinsText = new Text(100, 100, resourceManager.font, "Coins: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
 		coinsText.setSkewCenter(0, 0);
 		coinsText.setText("Coins: 0");
 		

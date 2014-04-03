@@ -43,6 +43,10 @@ public class ResourceManager {
 	public ITextureRegion perkBackgroundRegion;
 	public ITextureRegion coinPerkRegion;
 	public ITextureRegion speedPerkRegion;
+	//achievement menu
+	public ITextureRegion achieveBackgroundRegion;
+	//end game menu
+	
 	//other
 	public ITextureRegion spaceshipRegion;
 	public ITextureRegion asteroidRegion;
@@ -55,6 +59,7 @@ public class ResourceManager {
 	private BitmapTextureAtlas splashTextureAtlas;
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
 	private BuildableBitmapTextureAtlas perkTextureAtlas;
+	private BuildableBitmapTextureAtlas achieveTextureAtlas;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
 	
 	public DataBaseHelper DBHelper;
@@ -99,6 +104,12 @@ public class ResourceManager {
 		loadPerkGraphics();
 		loadPerkFonts();
 		loadPerkAudio();
+	}
+	
+	public void loadAchieveResources() {
+		loadAchieveGraphics();
+		loadAchieveFonts();
+		loadAchieveAudio();
 	}
 	
 	public void loadGameResources() {
@@ -175,6 +186,29 @@ public class ResourceManager {
 	}
 
 	private void loadPerkAudio() {
+
+	}
+	
+	private void loadAchieveGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/achieve/");
+		achieveTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
+		achieveBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(achieveTextureAtlas, activity, "achieve_background.png");
+		//coinPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "coin.png");
+		//speedPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "speed.png");
+
+		try {
+			this.achieveTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+			this.achieveTextureAtlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
+	}
+
+	private void loadAchieveFonts() {
+
+	}
+
+	private void loadAchieveAudio() {
 
 	}
 	

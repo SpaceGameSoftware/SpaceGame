@@ -11,6 +11,7 @@ public class SceneManager {
 	private BaseScene gameScene;
 	private BaseScene loadingScene;
 	private BaseScene perkScene;
+	private BaseScene achieveScene;
 	
 	private static final SceneManager INSTANCE = new SceneManager();
 	
@@ -23,7 +24,9 @@ public class SceneManager {
 		SCENE_MENU,
 		SCENE_GAME,
 		SCENE_LOADING,
-		SCENE_PERK
+		SCENE_PERK,
+		SCENE_ACHIEVE,
+		SCENE_END_GAME
 	}
 	
 	public void createSplashScene(OnCreateSceneCallback onCreateSceneCallback) {
@@ -46,6 +49,12 @@ public class SceneManager {
 		setScene(perkScene);
 	}
 	
+	public void createAchieveScene() {
+		ResourceManager.getInstance().loadAchieveResources();
+		achieveScene = new AchievementScene();
+		setScene(achieveScene);
+	}
+	
 	public void createGameScene() {
 		ResourceManager.getInstance().loadGameResources();
 		gameScene = new GameScene();
@@ -63,6 +72,12 @@ public class SceneManager {
 		case SCENE_MENU:
 			setScene(menuScene);
 			break;
+		case SCENE_PERK:
+			setScene(perkScene);
+			break;
+		case SCENE_ACHIEVE:
+			setScene(achieveScene);
+			break;
 		case SCENE_GAME:
 			setScene(gameScene);
 			break;
@@ -72,6 +87,9 @@ public class SceneManager {
 		case SCENE_LOADING:
 			setScene(loadingScene);
 			break;
+		//case SCENE_END_GAME:
+		//	setScene(endGameScene);
+		//	break;
 		default:
 			break;
 		}

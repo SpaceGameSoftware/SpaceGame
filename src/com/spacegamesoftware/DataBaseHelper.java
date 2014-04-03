@@ -134,7 +134,9 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		//update DB schema
 	}
 
-	//query methods
+	/*
+	 * QUERY METHODS
+	 */
 	
 	public int getCoins(String playerId) {
 		String[] columns = {"coins"};
@@ -142,8 +144,5 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		return results.getInt(0);
 		
 	}
-        // Add your public helper methods to access and get content from the database.
-       // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
-       // to you to create adapters for your views.
  
 }
