@@ -31,12 +31,18 @@ public class ResourceManager {
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
 	public ITextureRegion splashRegion;
+	//main menu
 	public ITextureRegion menuBackgroundRegion;
 	public ITextureRegion newGameRegion;
 	public ITextureRegion perksButtonRegion;
 	public ITextureRegion achievementsButtonRegion;
 	public ITextureRegion highscoreButtonRegion;
 	public ITextureRegion settingsButtonRegion;
+	//perk menu
+	public ITextureRegion perkBackgroundRegion;
+	public ITextureRegion coinPerkRegion;
+	public ITextureRegion speedPerkRegion;
+	//other
 	public ITextureRegion spaceshipRegion;
 	public ITextureRegion asteroidRegion;
 	public ITextureRegion coinRegion;
@@ -47,6 +53,7 @@ public class ResourceManager {
 	
 	private BitmapTextureAtlas splashTextureAtlas;
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
+	private BuildableBitmapTextureAtlas perkTextureAtlas;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
 	
 	public static void prepareManager(Engine engine, MainActivity activity, Camera camera, VertexBufferObjectManager vbom) {
@@ -65,6 +72,12 @@ public class ResourceManager {
 		loadMenuGraphics();
 		loadMenuFonts();
 		loadMenuAudio();
+	}
+	
+	public void loadPerkResources() {
+		loadPerkGraphics();
+		loadPerkFonts();
+		loadPerkAudio();
 	}
 	
 	public void loadGameResources() {
@@ -119,6 +132,32 @@ public class ResourceManager {
 		} catch (final IOException e) {
 			Debug.e(e);
 		}
+	}
+	
+	private void loadPerkGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/perk/");
+		perkTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
+		perkBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "perk_background.png");
+		coinPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "coin.png");
+		speedPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "speed.png");
+		//achievementsButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "achievements.png");
+		//highscoreButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "high_scores.png");
+		//settingsButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "settings.png");
+
+		try {
+			this.perkTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+			this.perkTextureAtlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
+	}
+
+	private void loadPerkFonts() {
+
+	}
+
+	private void loadPerkAudio() {
+
 	}
 	
 	private void loadGameGraphics() {

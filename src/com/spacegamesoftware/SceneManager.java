@@ -10,6 +10,7 @@ public class SceneManager {
 	private BaseScene menuScene;
 	private BaseScene gameScene;
 	private BaseScene loadingScene;
+	private BaseScene perkScene;
 	
 	private static final SceneManager INSTANCE = new SceneManager();
 	
@@ -21,7 +22,8 @@ public class SceneManager {
 		SCENE_SPLASH,
 		SCENE_MENU,
 		SCENE_GAME,
-		SCENE_LOADING
+		SCENE_LOADING,
+		SCENE_PERK
 	}
 	
 	public void createSplashScene(OnCreateSceneCallback onCreateSceneCallback) {
@@ -36,6 +38,12 @@ public class SceneManager {
 		menuScene = new MainMenuScene();
 		setScene(menuScene);
 		disposeSplashScene();
+	}
+	
+	public void createPerkScene() {
+		ResourceManager.getInstance().loadPerkResources();
+		perkScene = new PerkScene();
+		setScene(perkScene);
 	}
 	
 	public void createGameScene() {
@@ -87,5 +95,5 @@ public class SceneManager {
 		splashScene.disposeScene();
 		splashScene = null;
 	}
-
+	
 }

@@ -74,6 +74,10 @@ public class MainActivity extends BaseGameActivity {
 		resourceManager.music.pause();
 	}
 	
-	
+	//@Override
+	//public void onResume() {
+	//    super.onResume();  // Always call the superclass method first
+	//    resourceManager.music.resume();
+	//}
 
 }
