@@ -20,6 +20,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
+import android.content.Context;
 import android.graphics.Color;
 
 public class ResourceManager {
@@ -56,12 +57,32 @@ public class ResourceManager {
 	private BuildableBitmapTextureAtlas perkTextureAtlas;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
 	
+	public DataBaseHelper DBHelper;
+	
+	//player info
+	static int coins;
+
+	int distance;
+
+	int score;
+	
 	public static void prepareManager(Engine engine, MainActivity activity, Camera camera, VertexBufferObjectManager vbom) {
 		getInstance().engine = engine;
 		getInstance().activity = activity;
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
+		getInstance().DBHelper = new DataBaseHelper(activity);
 		
+		try {
+			//create DB if it doesn't exist
+			getInstance().DBHelper.createDataBase();
+			//coins = DBHelper.getCoins("1");
+		} 
+		
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static ResourceManager getInstance() {
@@ -140,9 +161,6 @@ public class ResourceManager {
 		perkBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "perk_background.png");
 		coinPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "coin.png");
 		speedPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "speed.png");
-		//achievementsButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "achievements.png");
-		//highscoreButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "high_scores.png");
-		//settingsButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "settings.png");
 
 		try {
 			this.perkTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
@@ -182,6 +200,4 @@ public class ResourceManager {
 		
 	}
 	
-	
-
 }

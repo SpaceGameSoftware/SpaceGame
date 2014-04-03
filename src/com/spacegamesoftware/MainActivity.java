@@ -48,6 +48,7 @@ public class MainActivity extends BaseGameActivity {
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback) throws IOException {
 		ResourceManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
 		resourceManager = ResourceManager.getInstance();
+		
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
 

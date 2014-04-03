@@ -1,13 +1,17 @@
 package com.spacegamesoftware;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.entity.text.TextOptions;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.HorizontalAlign;
 
 import com.spacegamesoftware.SceneManager.SceneType;
 
@@ -15,17 +19,14 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 
 	private MenuScene perkChildScene;
 	private Sprite perkBackground;
+	private Text coinsText;
 	private final int PERK_COIN = 0;
 	private final int PERK_SPEED = 1;
-	//private final int MENU_ACHIEVMENTS = 2;
-	//private final int MENU_HIGHSCORE = 3;
-	//private final int MENU_SETTINGS = 4;
 
 	@Override
 	public void createScene() {
 		createBackground();
 		createPerkChildScene();
-		//resourceManager.music.play();
 	}
 
 	@Override
@@ -65,6 +66,10 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 		perkChildScene = new MenuScene(camera);
 		perkChildScene.setPosition(0, 0);
 
+		coinsText = new Text(20, 20, resourceManager.font, "Coins: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+		coinsText.setSkewCenter(0, 0);
+		coinsText.setText("Coins: 0");
+		
 		final IMenuItem coinPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_COIN, resourceManager.coinPerkRegion, vbom), 0.7f, 0.75f);
 		final IMenuItem speedPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_SPEED, resourceManager.speedPerkRegion, vbom), 0.7f, 0.75f);
 
@@ -88,22 +93,15 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	public boolean onMenuItemClicked(MenuScene menuScene, IMenuItem menuItem, float menuItemLocalX, float menuItemLocalY) {
 		switch (menuItem.getID()) {
 		case PERK_COIN:
-			//SceneManager.getInstance().createGameScene();
+			//Do something
 			return true;
 		case PERK_SPEED:
 			//Do something
 			return true;
-			/*
-		case MENU_ACHIEVMENTS:
-			return true;
-		case MENU_HIGHSCORE:
-			return true;
-		case MENU_SETTINGS:
-			return true;
-			*/
 		default:
 			return false;
 		}
 	}
+	
 
 }
