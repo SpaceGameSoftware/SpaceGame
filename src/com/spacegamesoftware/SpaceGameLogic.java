@@ -66,6 +66,7 @@ public class SpaceGameLogic implements IUpdateHandler {
 		this.spaceship = spaceship;
 	}
 	
+	
 	private void updateDistance() {
 		if (timeSinceDistance > 1.0 / 6.0) {
 			distance += 1;
@@ -101,8 +102,9 @@ public class SpaceGameLogic implements IUpdateHandler {
 	}
 	
 	private Asteroid createAsteroid() {
+		int asteroidId = rand.nextInt(4);
 		float x = (float) rand.nextInt(MainActivity.CAMERA_WIDTH);
-		Asteroid asteroid = new Asteroid(x, 0.0f, ResourceManager.getInstance().asteroidRegion,
+		Asteroid asteroid = new Asteroid(x, 0.0f, ResourceManager.getInstance().asteroidRegion[asteroidId],
 				ResourceManager.getInstance().vbom);
 		float dy = (rand.nextFloat() * 6) + 1.0f;
 		asteroid.setVelocity(new Vector(0.0f, dy));

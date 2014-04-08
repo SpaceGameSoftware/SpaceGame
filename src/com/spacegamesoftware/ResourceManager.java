@@ -38,7 +38,10 @@ public class ResourceManager {
 	public ITextureRegion highscoreButtonRegion;
 	public ITextureRegion settingsButtonRegion;
 	public ITextureRegion spaceshipRegion;
-	public ITextureRegion asteroidRegion;
+	public ITextureRegion[] asteroidRegion;
+	public ITextureRegion asteroidRegion2;
+	public ITextureRegion asteroidRegion3;
+	public ITextureRegion asteroidRegion4;
 	public ITextureRegion coinRegion;
 	
 	public Music music;
@@ -127,10 +130,14 @@ public class ResourceManager {
 	}
 	
 	private void loadGameGraphics() {
+		asteroidRegion = new ITextureRegion[4];
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 		spaceshipRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "spaceship.png");
-		asteroidRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "asteroid.png");
+		asteroidRegion[0] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "asteroid.png");
+		asteroidRegion[1] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "asteroid2.png");
+		asteroidRegion[2] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "asteroid3.png");
+		asteroidRegion[3] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "asteroid4.png");
 		coinRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin.png");
 		
 		try {

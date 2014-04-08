@@ -1,5 +1,6 @@
 package com.spacegamesoftware;
 
+import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -11,6 +12,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.HorizontalAlign;
 import org.andengine.util.color.Color;
 
@@ -23,6 +25,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private Text coinsText;
 	private Text distanceText;
 	private Spaceship spaceship;
+	private Sprite gameBackground;
 	private SpaceGameLogic logic;
 
 	@Override
@@ -68,7 +71,17 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	
 	
 	private void createBackground() {
-		setBackground(new Background(Color.BLUE));
+		gameBackground = new Sprite(0, 0, resourceManager.menuBackgroundRegion, vbom) {
+			
+			@Override
+			protected void preDraw(GLState glState, Camera camera) {
+				super.preDraw(glState, camera);
+				glState.enableDither();
+			}
+		};
+		
+		attachChild(gameBackground);
+		
 	}
 	
 	private void createSpaceship() {
