@@ -55,7 +55,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 			
 		};
 		
-		menuBackground.setScale(14.0f);
+		menuBackground.setScale(1.0f);
 		
 		attachChild(menuBackground);
 	}
