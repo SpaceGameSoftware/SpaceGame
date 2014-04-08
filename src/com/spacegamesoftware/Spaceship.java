@@ -12,7 +12,9 @@ public class Spaceship extends Sprite  implements IOnSceneTouchListener {
 	public Spaceship(float pX, float pY,
 			ITextureRegion pTextureRegion,
 			VertexBufferObjectManager pSpriteVertexBufferObject) {
-		super(pX, pY, pTextureRegion, pSpriteVertexBufferObject); 
+		super(pX, pY, pTextureRegion, pSpriteVertexBufferObject);
+		
+		setScale(1.4f);
 	}
 	
 	private float lastX;
