@@ -20,6 +20,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
+import android.content.Context;
 import android.graphics.Color;
 
 public class ResourceManager {
@@ -31,12 +32,22 @@ public class ResourceManager {
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
 	public ITextureRegion splashRegion;
+	//main menu
 	public ITextureRegion menuBackgroundRegion;
 	public ITextureRegion newGameRegion;
 	public ITextureRegion perksButtonRegion;
 	public ITextureRegion achievementsButtonRegion;
 	public ITextureRegion highscoreButtonRegion;
 	public ITextureRegion settingsButtonRegion;
+	//perk menu
+	public ITextureRegion perkBackgroundRegion;
+	public ITextureRegion coinPerkRegion;
+	public ITextureRegion speedPerkRegion;
+	//achievement menu
+	public ITextureRegion achieveBackgroundRegion;
+	//end game menu
+	
+	//other
 	public ITextureRegion spaceshipRegion;
 	public ITextureRegion[] asteroidRegion;
 	public ITextureRegion asteroidRegion2;
@@ -51,14 +62,36 @@ public class ResourceManager {
 	private BitmapTextureAtlas splashTextureAtlas;
 	private BitmapTextureAtlas menuBackgroundTextureAtlas;
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
+	private BuildableBitmapTextureAtlas perkTextureAtlas;
+	private BuildableBitmapTextureAtlas achieveTextureAtlas;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
+	
+	public DataBaseHelper DBHelper;
+	
+	//player info
+	static int coins;
+
+	int distance;
+
+	int score;
 	
 	public static void prepareManager(Engine engine, MainActivity activity, Camera camera, VertexBufferObjectManager vbom) {
 		getInstance().engine = engine;
 		getInstance().activity = activity;
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
+		getInstance().DBHelper = new DataBaseHelper(activity);
 		
+		try {
+			//create DB if it doesn't exist
+			getInstance().DBHelper.createDataBase();
+			//coins = DBHelper.getCoins("1");
+		} 
+		
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static ResourceManager getInstance() {
@@ -69,6 +102,18 @@ public class ResourceManager {
 		loadMenuGraphics();
 		loadMenuFonts();
 		loadMenuAudio();
+	}
+	
+	public void loadPerkResources() {
+		loadPerkGraphics();
+		loadPerkFonts();
+		loadPerkAudio();
+	}
+	
+	public void loadAchieveResources() {
+		loadAchieveGraphics();
+		loadAchieveFonts();
+		loadAchieveAudio();
 	}
 	
 	public void loadGameResources() {
@@ -129,6 +174,52 @@ public class ResourceManager {
 		}
 	}
 	
+	private void loadPerkGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/perk/");
+		perkTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
+		perkBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "perk_background.png");
+		coinPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "coin.png");
+		speedPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "speed.png");
+
+		try {
+			this.perkTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+			this.perkTextureAtlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
+	}
+
+	private void loadPerkFonts() {
+
+	}
+
+	private void loadPerkAudio() {
+
+	}
+	
+	private void loadAchieveGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/achieve/");
+		achieveTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
+		achieveBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(achieveTextureAtlas, activity, "achieve_background.png");
+		//coinPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "coin.png");
+		//speedPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "speed.png");
+
+		try {
+			this.achieveTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+			this.achieveTextureAtlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
+	}
+
+	private void loadAchieveFonts() {
+
+	}
+
+	private void loadAchieveAudio() {
+
+	}
+	
 	private void loadGameGraphics() {
 		asteroidRegion = new ITextureRegion[4];
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
@@ -155,6 +246,4 @@ public class ResourceManager {
 		
 	}
 	
-	
-
 }
