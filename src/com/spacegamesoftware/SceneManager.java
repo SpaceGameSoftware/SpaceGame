@@ -107,6 +107,10 @@ public class SceneManager {
 		return currentScene;
 	}
 	
+	public BaseScene getMenuScene() {
+		return menuScene;
+	}
+	
 	private void disposeSplashScene()
 	{
 		ResourceManager.getInstance().unloadSplashScreen();

@@ -16,9 +16,10 @@ import org.andengine.util.HorizontalAlign;
 import com.spacegamesoftware.SceneManager.SceneType;
 
 public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
-
+	private BaseScene mainMenuScene;
 	private MenuScene perkChildScene;
 	private Sprite perkBackground;
+	private HUD perkHUD;
 	private Text coinsText;
 	private final int PERK_COIN = 0;
 	private final int PERK_SPEED = 1;
@@ -27,11 +28,15 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	public void createScene() {
 		createBackground();
 		createPerkChildScene();
+		createHUD();
 	}
 
 	@Override
 	public void onBackKeyPressed() {
-		System.exit(0);
+		disposeScene();
+		//doesn't work
+		mainMenuScene = SceneManager.getInstance().getMenuScene();
+		SceneManager.getInstance().setScene(mainMenuScene);	
 	}
 
 	@Override
@@ -46,7 +51,6 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	}
 
 	private void createBackground() {
-		//change
 		perkBackground = new Sprite(0, 0, resourceManager.perkBackgroundRegion, vbom) {
 
 			@Override
@@ -57,7 +61,7 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 
 		};
 
-		perkBackground.setScale(14.0f);
+		perkBackground.setScale(1.0f);
 
 		attachChild(perkBackground);
 	}
@@ -65,17 +69,12 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	private void createPerkChildScene() {
 		perkChildScene = new MenuScene(camera);
 		perkChildScene.setPosition(0, 0);
-
-		coinsText = new Text(100, 100, resourceManager.font, "Coins: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
-		coinsText.setSkewCenter(0, 0);
-		coinsText.setText("Coins: 0");
 		
 		final IMenuItem coinPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_COIN, resourceManager.coinPerkRegion, vbom), 0.7f, 0.75f);
 		final IMenuItem speedPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_SPEED, resourceManager.speedPerkRegion, vbom), 0.7f, 0.75f);
 
 		perkChildScene.addMenuItem(coinPerkMenuItem);
 		perkChildScene.addMenuItem(speedPerkMenuItem);
-
 
 		perkChildScene.buildAnimations();
 		perkChildScene.setBackgroundEnabled(false);
@@ -93,14 +92,27 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	public boolean onMenuItemClicked(MenuScene menuScene, IMenuItem menuItem, float menuItemLocalX, float menuItemLocalY) {
 		switch (menuItem.getID()) {
 		case PERK_COIN:
-			//Do something
+			//Buy logic
+			//coinsText.setText("Coins: 10");
 			return true;
 		case PERK_SPEED:
-			//Do something
+			//Buy logic
+			//coinsText.setText("Coins: 20");
 			return true;
 		default:
 			return false;
 		}
+	}
+	
+	private void createHUD() {
+		String initInput;
+		perkHUD = new HUD();
+		coinsText = new Text(20, 80, resourceManager.font, "Coins: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+		coinsText.setSkewCenter(0, 0);
+		initInput = String.format("Coins: %d", ResourceManager.getInstance().getCoins());
+		coinsText.setText(initInput);
+		perkHUD.attachChild(coinsText);
+		camera.setHUD(perkHUD);
 	}
 	
 

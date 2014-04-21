@@ -57,7 +57,7 @@ public class AchievementScene extends BaseScene implements IOnMenuItemClickListe
 
 		};
 
-		achieveBackground.setScale(14.0f);
+		achieveBackground.setScale(1.0f);
 
 		attachChild(achieveBackground);
 	}

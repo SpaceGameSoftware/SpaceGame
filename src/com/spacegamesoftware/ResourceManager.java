@@ -21,7 +21,9 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.graphics.Color;
+import android.widget.Toast;
 
 public class ResourceManager {
 	
@@ -66,13 +68,13 @@ public class ResourceManager {
 	private BuildableBitmapTextureAtlas achieveTextureAtlas;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
 	
-	public DataBaseHelper DBHelper;
-	
+	//database variables
+	//public DataBaseHelper DBHelper;
+	public PlayerDataSource PlayerDataSource;
+	public PlayerData player;
 	//player info
-	static int coins;
-
+	int coins;
 	int distance;
-
 	int score;
 	
 	public static void prepareManager(Engine engine, MainActivity activity, Camera camera, VertexBufferObjectManager vbom) {
@@ -80,16 +82,18 @@ public class ResourceManager {
 		getInstance().activity = activity;
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
-		getInstance().DBHelper = new DataBaseHelper(activity);
+		getInstance().PlayerDataSource = new PlayerDataSource(activity);
 		
 		try {
-			//create DB if it doesn't exist
-			getInstance().DBHelper.createDataBase();
-			//coins = DBHelper.getCoins("1");
+			//getInstance().PlayerDataSource.open();
+			//get info from DB
+			getInstance().player = getInstance().PlayerDataSource.getPlayer();
+			getInstance().coins = getInstance().player.getCoins();
+			getInstance().distance = getInstance().player.getDistance();
+			getInstance().score = getInstance().player.getScore();
 		} 
 		
-		catch (IOException e) {
-			// TODO Auto-generated catch block
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -244,6 +248,10 @@ public class ResourceManager {
 	
 	private void loadGameAudio() {
 		
+	}
+	
+	public int getCoins() {
+		return coins;
 	}
 	
 }
