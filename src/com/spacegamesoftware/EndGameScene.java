@@ -15,10 +15,10 @@ import org.andengine.util.HorizontalAlign;
 
 import com.spacegamesoftware.SceneManager.SceneType;
 
-public class AchievementScene extends BaseScene implements IOnMenuItemClickListener {
+public class EndGameScene extends BaseScene implements IOnMenuItemClickListener {
 
-	private MenuScene achieveChildScene;
-	private Sprite achieveBackground;
+	private MenuScene endGameChildScene;
+	private Sprite endGameBackground;
 	//private Text coinsText;
 	//private final int PERK_COIN = 0;
 	//private final int PERK_SPEED = 1;
@@ -26,12 +26,12 @@ public class AchievementScene extends BaseScene implements IOnMenuItemClickListe
 	@Override
 	public void createScene() {
 		createBackground();
-		createAchieveChildScene();
+		createEndGameChildScene();
 	}
 
 	@Override
 	public void onBackKeyPressed() {
-		achieveChildScene.back();
+		endGameChildScene.back();
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class AchievementScene extends BaseScene implements IOnMenuItemClickListe
 
 	private void createBackground() {
 		//change
-		achieveBackground = new Sprite(0, 0, resourceManager.achieveBackgroundRegion, vbom) {
+		endGameBackground = new Sprite(0, 0, resourceManager.endGameBackgroundRegion, vbom) {
 
 			@Override
 			protected void preDraw(GLState glState, Camera camera) {
@@ -57,13 +57,13 @@ public class AchievementScene extends BaseScene implements IOnMenuItemClickListe
 
 		};
 
-		achieveBackground.setScale(1.0f);
-		attachChild(achieveBackground);
+		endGameBackground.setScale(1.0f);
+		attachChild(endGameBackground);
 	}
 
-	private void createAchieveChildScene() {
-		achieveChildScene = new MenuScene(camera);
-		achieveChildScene.setPosition(0, 0);
+	private void createEndGameChildScene() {
+		endGameChildScene = new MenuScene(camera);
+		endGameChildScene.setPosition(0, 0);
 
 		//coinsText = new Text(20, 20, resourceManager.font, "Coins: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
 		//coinsText.setSkewCenter(0, 0);
@@ -76,15 +76,15 @@ public class AchievementScene extends BaseScene implements IOnMenuItemClickListe
 		//perkChildScene.addMenuItem(speedPerkMenuItem);
 
 
-		achieveChildScene.buildAnimations();
-		achieveChildScene.setBackgroundEnabled(false);
+		endGameChildScene.buildAnimations();
+		endGameChildScene.setBackgroundEnabled(false);
 
 		//coinPerkMenuItem.setPosition(coinPerkMenuItem.getX(), coinPerkMenuItem.getY());
 		//speedPerkMenuItem.setPosition(speedPerkMenuItem.getX(), speedPerkMenuItem.getY());
 
 		//perkChildScene.setOnMenuItemClickListener(this);
 
-		setChildScene(achieveChildScene);
+		setChildScene(endGameChildScene);
 
 	}
 

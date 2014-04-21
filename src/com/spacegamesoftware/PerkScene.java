@@ -35,8 +35,9 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	public void onBackKeyPressed() {
 		disposeScene();
 		//doesn't work
-		mainMenuScene = SceneManager.getInstance().getMenuScene();
-		SceneManager.getInstance().setScene(mainMenuScene);	
+		//mainMenuScene = SceneManager.getInstance().getMenuScene();
+		//SceneManager.getInstance().setScene(mainMenuScene);
+		perkChildScene.back();
 	}
 
 	@Override

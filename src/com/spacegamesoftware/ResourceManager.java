@@ -48,7 +48,7 @@ public class ResourceManager {
 	//achievement menu
 	public ITextureRegion achieveBackgroundRegion;
 	//end game menu
-	
+	public ITextureRegion endGameBackgroundRegion;
 	//other
 	public ITextureRegion spaceshipRegion;
 	public ITextureRegion[] asteroidRegion;
@@ -67,6 +67,7 @@ public class ResourceManager {
 	private BuildableBitmapTextureAtlas perkTextureAtlas;
 	private BuildableBitmapTextureAtlas achieveTextureAtlas;
 	private BuildableBitmapTextureAtlas gameTextureAtlas;
+	private BuildableBitmapTextureAtlas endGameTextureAtlas;
 	
 	//database variables
 	//public DataBaseHelper DBHelper;
@@ -124,6 +125,12 @@ public class ResourceManager {
 		loadGameGraphics();
 		loadGameFonts();
 		loadGameAudio();
+	}
+	
+	public void loadEndGameResources() {
+		loadEndGameGraphics();
+		loadEndGameFonts();
+		loadEndGameAudio();
 	}
 	
 	public void loadSplashScreen() {
@@ -247,6 +254,29 @@ public class ResourceManager {
 	}
 	
 	private void loadGameAudio() {
+		
+	}
+	
+	private void loadEndGameGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/endgame/");
+		endGameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
+		endGameBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(achieveTextureAtlas, activity, "endgame_background.png");
+		//coinPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "coin.png");
+		//speedPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "speed.png");
+
+		try {
+			this.achieveTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+			this.achieveTextureAtlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
+	}
+	
+	private void loadEndGameFonts() {
+		
+	}
+	
+	private void loadEndGameAudio() {
 		
 	}
 	

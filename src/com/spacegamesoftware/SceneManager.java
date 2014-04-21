@@ -3,7 +3,6 @@ package com.spacegamesoftware;
 import org.andengine.engine.Engine;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
-
 public class SceneManager {
 	
 	private BaseScene splashScene;
@@ -12,6 +11,7 @@ public class SceneManager {
 	private BaseScene loadingScene;
 	private BaseScene perkScene;
 	private BaseScene achieveScene;
+	private BaseScene endGameScene;
 	
 	private static final SceneManager INSTANCE = new SceneManager();
 	
@@ -61,6 +61,12 @@ public class SceneManager {
 		setScene(gameScene);
 	}
 	
+	public void createEndGameScene() {
+		ResourceManager.getInstance().loadEndGameResources();
+		gameScene = new EndGameScene();
+		setScene(endGameScene);
+	}
+	
 	public void setScene(BaseScene scene) {
 		engine.setScene(scene);
 		currentScene = scene;
@@ -87,9 +93,9 @@ public class SceneManager {
 		case SCENE_LOADING:
 			setScene(loadingScene);
 			break;
-		//case SCENE_END_GAME:
-		//	setScene(endGameScene);
-		//	break;
+		case SCENE_END_GAME:
+			setScene(endGameScene);
+			break;
 		default:
 			break;
 		}
