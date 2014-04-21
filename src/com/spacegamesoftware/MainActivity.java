@@ -15,6 +15,7 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 
 import android.graphics.Point;
 import android.view.Display;
+import android.view.KeyEvent;
 
 
 public class MainActivity extends BaseGameActivity {
@@ -73,6 +74,14 @@ public class MainActivity extends BaseGameActivity {
 	protected void onPause() {
 		super.onPause();
 		resourceManager.music.pause();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
+		}
+		return false;
 	}
 	
 	//@Override

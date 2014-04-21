@@ -30,7 +30,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 
 	@Override
 	public void onBackKeyPressed() {
-		System.exit(0);
+		//System.exit(0);
 	}
 
 	@Override

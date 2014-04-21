@@ -16,7 +16,7 @@ import org.andengine.util.HorizontalAlign;
 import com.spacegamesoftware.SceneManager.SceneType;
 
 public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
-	private BaseScene mainMenuScene;
+	
 	private MenuScene perkChildScene;
 	private Sprite perkBackground;
 	private HUD perkHUD;
@@ -36,8 +36,8 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 		disposeScene();
 		//doesn't work
 		//mainMenuScene = SceneManager.getInstance().getMenuScene();
-		//SceneManager.getInstance().setScene(mainMenuScene);
-		perkChildScene.back();
+		SceneManager.getInstance().setScene(SceneManager.SceneType.SCENE_MENU);
+		//perkChildScene.back();
 	}
 
 	@Override
@@ -47,7 +47,12 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 
 	@Override
 	public void disposeScene() {
-		// TODO Auto-generated method stub
+		perkHUD.detachSelf();
+		perkHUD.dispose();
+		coinsText.detachSelf();
+		coinsText.dispose();
+		perkBackground.detachSelf();
+		perkBackground.dispose();
 
 	}
 
