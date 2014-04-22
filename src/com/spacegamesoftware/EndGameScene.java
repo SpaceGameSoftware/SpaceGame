@@ -68,7 +68,7 @@ public class EndGameScene extends BaseScene implements IOnMenuItemClickListener 
 		
 		final IMenuItem mainMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_MAIN, resourceManager.menuButtonRegion, vbom), 0.7f, 0.75f);
 		
-		final IMenuItem quitMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_NEWGAME, resourceManager.quitButtonRegion, vbom), 0.7f, 0.75f);
+		final IMenuItem quitMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_QUIT, resourceManager.quitButtonRegion, vbom), 0.7f, 0.75f);
 		
 		endGameChildScene.addMenuItem(retryMenuItem);
 		endGameChildScene.addMenuItem(mainMenuItem);
