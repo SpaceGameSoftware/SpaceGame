@@ -21,9 +21,12 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	private Sprite perkBackground;
 	private HUD perkHUD;
 	private Text coinsText;
-	private final int PERK_COIN = 0;
-	private final int PERK_SPEED = 1;
+	private final int BUY_BUTTON = 0;
+	private final int PERK_COIN = 1;
+	private final int PERK_DISTANCE = 2;
 
+	private int perkId;
+	
 	@Override
 	public void createScene() {
 		createBackground();
@@ -34,10 +37,7 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	@Override
 	public void onBackKeyPressed() {
 		disposeScene();
-		//doesn't work
-		//mainMenuScene = SceneManager.getInstance().getMenuScene();
 		SceneManager.getInstance().setScene(SceneManager.SceneType.SCENE_MENU);
-		//perkChildScene.back();
 	}
 
 	@Override
@@ -64,11 +64,9 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 				super.preDraw(glState, camera);
 				glState.enableDither();
 			}
-
 		};
 
 		perkBackground.setScale(1.0f);
-
 		attachChild(perkBackground);
 	}
 
@@ -77,19 +75,22 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 		perkChildScene.setPosition(0, 0);
 		
 		final IMenuItem coinPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_COIN, resourceManager.coinPerkRegion, vbom), 0.7f, 0.75f);
-		final IMenuItem speedPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_SPEED, resourceManager.speedPerkRegion, vbom), 0.7f, 0.75f);
-
+		final IMenuItem speedPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_DISTANCE, resourceManager.speedPerkRegion, vbom), 0.7f, 0.75f);
+		final IMenuItem buyPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_DISTANCE, resourceManager.speedPerkRegion, vbom), 0.7f, 0.75f);
+		
 		perkChildScene.addMenuItem(coinPerkMenuItem);
 		perkChildScene.addMenuItem(speedPerkMenuItem);
-
+		perkChildScene.addMenuItem(buyPerkMenuItem);
+		
 		perkChildScene.buildAnimations();
 		perkChildScene.setBackgroundEnabled(false);
 
-		coinPerkMenuItem.setPosition(coinPerkMenuItem.getX(), coinPerkMenuItem.getY());
-		speedPerkMenuItem.setPosition(speedPerkMenuItem.getX(), speedPerkMenuItem.getY());
+		float x = 80;
+		coinPerkMenuItem.setPosition(x, coinPerkMenuItem.getY());
+		speedPerkMenuItem.setPosition(x, speedPerkMenuItem.getY());
+		buyPerkMenuItem.setPosition(x, buyPerkMenuItem.getY());
 
 		perkChildScene.setOnMenuItemClickListener(this);
-
 		setChildScene(perkChildScene);
 
 	}
@@ -97,13 +98,14 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	@Override
 	public boolean onMenuItemClicked(MenuScene menuScene, IMenuItem menuItem, float menuItemLocalX, float menuItemLocalY) {
 		switch (menuItem.getID()) {
-		case PERK_COIN:
-			//Buy logic
-			//coinsText.setText("Coins: 10");
+		case BUY_BUTTON:
+			buyPerk(0);
 			return true;
-		case PERK_SPEED:
-			//Buy logic
-			//coinsText.setText("Coins: 20");
+		case PERK_COIN:
+			perkId = 0;
+			return true;
+		case PERK_DISTANCE:
+			perkId = 1;
 			return true;
 		default:
 			return false;
@@ -121,5 +123,9 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 		camera.setHUD(perkHUD);
 	}
 	
-
+	private void buyPerk(int perkId) {
+		//if (ResourceManager.getInstance().getCoins() >= price) {
+			//buy
+		//}
+	}
 }
