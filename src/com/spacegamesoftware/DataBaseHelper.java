@@ -17,10 +17,10 @@ import android.util.Log;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 	private SQLiteDatabase myDataBase;
-	private static String DATABASE_NAME = "empty.db";
+	private static String DATABASE_NAME = "SpaceGame.db";
 	private static int DATABASE_VERSION = 1;
 	
-	private static String TABLE_PLAYER = "Player"; //player table
+	private static String TABLE_PLAYER = "Player";
 	private static String TABLE_PERKS = "Perks";
 	private static String TABLE_ACHIEVEMENTS = "Achievements";
 	private static String TABLE_GAMES = "Games";
@@ -82,41 +82,56 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		//create Player table and insert values
 		db.execSQL(PLAYER_TABLE_CREATE);
 		ContentValues playerTableValues = new ContentValues();
-		playerTableValues.put("_id", 25);
-		playerTableValues.put("coins", 100);
-		playerTableValues.put("distance", 50);
-		playerTableValues.put("score", 205);
-		db.insert("Player", null, playerTableValues);
+		playerTableValues.put(COLUMN_ID, 25);
+		playerTableValues.put(COLUMN_COINS, 100);
+		playerTableValues.put(COLUMN_DISTANCE, 50);
+		playerTableValues.put(COLUMN_SCORE, 205);
+		db.insert(TABLE_PLAYER, null, playerTableValues);
 		
 		db.execSQL(PERK_TABLE_CREATE);
-		/*
-		 ContentValues playerTableValues = new ContentValues();
-		playerTableValues.put("_id", 25);
-		playerTableValues.put("coins", 100);
-		playerTableValues.put("distance", 50);
-		playerTableValues.put("score", 205);
-		db.insert("Player", null, playerTableValues);
-		 * */
+		ContentValues perkTableValues = new ContentValues();
+		perkTableValues.put(COLUMN_ID, 0);
+		perkTableValues.put(COLUMN_DESCRIPTION, "2x the distance multiplier.");
+		perkTableValues.put(COLUMN_VALUE, 200);
+		perkTableValues.put(COLUMN_PREREQ_ID, 0);
+		db.insert(TABLE_PERKS, null, perkTableValues);
+		
+		perkTableValues = new ContentValues();
+		perkTableValues.put(COLUMN_ID, 1);
+		perkTableValues.put(COLUMN_DESCRIPTION, "3x the distance multiplier.");
+		perkTableValues.put(COLUMN_VALUE, 400);
+		perkTableValues.put(COLUMN_PREREQ_ID, 0);
+		db.insert(TABLE_PERKS, null, perkTableValues);
+		
+		perkTableValues = new ContentValues();
+		perkTableValues.put(COLUMN_ID, 2);
+		perkTableValues.put(COLUMN_DESCRIPTION, "Coins with value of 2 appear.");
+		perkTableValues.put(COLUMN_VALUE, 200);
+		perkTableValues.put(COLUMN_PREREQ_ID, 0);
+		db.insert(TABLE_PERKS, null, perkTableValues);
+		
 		db.execSQL(ACHIEVEMENTS_TABLE_CREATE);
-		/*
-		 ContentValues playerTableValues = new ContentValues();
-		playerTableValues.put("_id", 25);
-		playerTableValues.put("coins", 100);
-		playerTableValues.put("distance", 50);
-		playerTableValues.put("score", 205);
-		db.insert("Player", null, playerTableValues);
-		 * */
+		ContentValues achievementTableValues = new ContentValues();
+		achievementTableValues.put(COLUMN_ID, 0);
+		achievementTableValues.put(COLUMN_DESCRIPTION, "Go a distance of 10k.");
+		db.insert(TABLE_ACHIEVEMENTS, null, achievementTableValues);
+		
+		achievementTableValues = new ContentValues();
+		achievementTableValues.put(COLUMN_ID, 1);
+		achievementTableValues.put(COLUMN_DESCRIPTION, "Collect 50 Space Coins.");
+		db.insert(TABLE_ACHIEVEMENTS, null, achievementTableValues);
+		
+		
 		db.execSQL(GAMES_TABLE_CREATE);
 		
 		db.execSQL(SETTINGS_TABLE_CREATE);
-		/*
-		 ContentValues playerTableValues = new ContentValues();
-		playerTableValues.put("_id", 25);
-		playerTableValues.put("coins", 100);
-		playerTableValues.put("distance", 50);
-		playerTableValues.put("score", 205);
-		db.insert("Player", null, playerTableValues);
-		 * */
+		ContentValues settingsTableValues = new ContentValues();
+		settingsTableValues.put(COLUMN_ID, 0);
+		settingsTableValues.put(COLUMN_MUSIC_ON, 1);
+		settingsTableValues.put(COLUMN_EFFECTS_ON, 0);
+		settingsTableValues.put(COLUMN_VIBRATE_ON, 0);
+		db.insert(TABLE_SETTINGS, null, settingsTableValues);
+
 		db.execSQL(PLAYER_PERKS_TABLE_CREATE);
 		
 		db.execSQL(PLAYER_ACHIEVEMENTS_TABLE_CREATE);
