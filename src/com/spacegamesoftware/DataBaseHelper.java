@@ -83,7 +83,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		db.execSQL(PLAYER_TABLE_CREATE);
 		ContentValues playerTableValues = new ContentValues();
 		playerTableValues.put(COLUMN_ID, 25);
-		playerTableValues.put(COLUMN_COINS, 100);
+		playerTableValues.put(COLUMN_COINS, 0);
 		playerTableValues.put(COLUMN_DISTANCE, 50);
 		playerTableValues.put(COLUMN_SCORE, 205);
 		db.insert(TABLE_PLAYER, null, playerTableValues);

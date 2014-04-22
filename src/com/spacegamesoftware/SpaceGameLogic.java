@@ -151,7 +151,21 @@ public class SpaceGameLogic implements IUpdateHandler {
 	}
 	
 	private void onGameOver() {
+		//save values into DB
+		GameData game = new GameData();
+		//refactor
+		int randomInt = rand.nextInt(100000);
+		game.setId(randomInt);
+		game.setCoins(coins);
+		game.setDistance(distance);
+		game.setScore(score);
+		game.setPlayerId(25);
+		//insert into game table
+		
+		//also update #coins in player table
+		
 		scene.disposeScene();
+		//change to END_GAME
 		SceneManager.getInstance().setScene(SceneManager.SceneType.SCENE_MENU);
 	}
 
