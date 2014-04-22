@@ -15,8 +15,8 @@ public class PlayerDataSource {
   private Context context;
   private SQLiteDatabase database;
   private DataBaseHelper dbHelper;
-  private String[] allColumns = { DataBaseHelper.COLUMN_ID,
-		  DataBaseHelper.COLUMN_COINS, DataBaseHelper.COLUMN_DISTANCE, DataBaseHelper.COLUMN_SCORE };
+  private String[] allColumns = { DataBaseHelper.getColumnId(),
+		  DataBaseHelper.getColumnCoins(), DataBaseHelper.getColumnDistance(), DataBaseHelper.getColumnScore() };
 
   public PlayerDataSource(Context MainActivity) {
 	context= MainActivity;
@@ -35,11 +35,11 @@ public class PlayerDataSource {
   public PlayerData createPlayer(int comment) {
 	  //update
     ContentValues values = new ContentValues();
-    values.put(DataBaseHelper.COLUMN_COINS, comment);
+    values.put(DataBaseHelper.getColumnCoins(), comment);
     long insertId = database.insert(DataBaseHelper.getPlayerTable(), null,
         values);
     Cursor cursor = database.query(DataBaseHelper.getPlayerTable(),
-        allColumns, DataBaseHelper.COLUMN_ID + " = " + insertId, null,
+        allColumns, DataBaseHelper.getColumnId() + " = " + insertId, null,
         null, null, null);
     cursor.moveToFirst();
     PlayerData newComment = cursorToPlayer(cursor);
@@ -51,7 +51,7 @@ public class PlayerDataSource {
 	  //update
     long id = player.getId();
     System.out.println("Comment deleted with id: " + id);
-    database.delete(DataBaseHelper.getPlayerTable(), DataBaseHelper.COLUMN_ID
+    database.delete(DataBaseHelper.getPlayerTable(), DataBaseHelper.getColumnId()
         + " = " + id, null);
   }
 

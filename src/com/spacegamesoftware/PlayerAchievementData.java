@@ -1,7 +1,7 @@
 package com.spacegamesoftware;
 
 public class PlayerAchievementData {
-	//model of data saved in Player table
+	//model of data saved in PlayerAchievement table
 	private long id;
 	private int achieveId;
 	
