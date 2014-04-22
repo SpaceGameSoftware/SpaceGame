@@ -19,9 +19,9 @@ public class EndGameScene extends BaseScene implements IOnMenuItemClickListener 
 
 	private MenuScene endGameChildScene;
 	private Sprite endGameBackground;
-	//private Text coinsText;
-	//private final int PERK_COIN = 0;
-	//private final int PERK_SPEED = 1;
+	private final int MENU_RETRY = 0;
+	private final int MENU_MAIN  = 1;
+	private final int MENU_QUIT  = 2;
 
 	@Override
 	public void createScene() {
@@ -42,7 +42,6 @@ public class EndGameScene extends BaseScene implements IOnMenuItemClickListener 
 	@Override
 	public void disposeScene() {
 		// TODO Auto-generated method stub
-
 	}
 
 	private void createBackground() {
@@ -65,25 +64,27 @@ public class EndGameScene extends BaseScene implements IOnMenuItemClickListener 
 		endGameChildScene = new MenuScene(camera);
 		endGameChildScene.setPosition(0, 0);
 
-		//coinsText = new Text(20, 20, resourceManager.font, "Coins: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
-		//coinsText.setSkewCenter(0, 0);
-		//coinsText.setText("Coins: 0");
+		final IMenuItem retryMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_RETRY, resourceManager.retryButtonRegion, vbom), 0.7f, 0.75f);
 		
-		//final IMenuItem coinPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_COIN, resourceManager.coinPerkRegion, vbom), 0.7f, 0.75f);
-		//final IMenuItem speedPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_SPEED, resourceManager.speedPerkRegion, vbom), 0.7f, 0.75f);
-
-		//perkChildScene.addMenuItem(coinPerkMenuItem);
-		//perkChildScene.addMenuItem(speedPerkMenuItem);
-
-
+		final IMenuItem mainMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_MAIN, resourceManager.menuButtonRegion, vbom), 0.7f, 0.75f);
+		
+		final IMenuItem quitMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_NEWGAME, resourceManager.quitButtonRegion, vbom), 0.7f, 0.75f);
+		
+		endGameChildScene.addMenuItem(retryMenuItem);
+		endGameChildScene.addMenuItem(mainMenuItem);
+		endGameChildScene.addMenuItem(quitMenuItem);
+		
 		endGameChildScene.buildAnimations();
 		endGameChildScene.setBackgroundEnabled(false);
 
-		//coinPerkMenuItem.setPosition(coinPerkMenuItem.getX(), coinPerkMenuItem.getY());
-		//speedPerkMenuItem.setPosition(speedPerkMenuItem.getX(), speedPerkMenuItem.getY());
-
-		//perkChildScene.setOnMenuItemClickListener(this);
-
+		float x = 80;
+		
+		retryMenuItem.setPosition(x, retryMenuItem.getY());
+		mainMenuItem.setPosition(x, mainMenuItem.getY());
+		quitMenuItem.setPosition(x, quitMenuItem.getY());
+		
+		endGameChildScene.setOnMenuItemClickListener(this);
+		
 		setChildScene(endGameChildScene);
 
 	}
@@ -91,14 +92,16 @@ public class EndGameScene extends BaseScene implements IOnMenuItemClickListener 
 	@Override
 	public boolean onMenuItemClicked(MenuScene menuScene, IMenuItem menuItem, float menuItemLocalX, float menuItemLocalY) {
 		switch (menuItem.getID()) {
-		/*
-		case PERK_COIN:
-			//Do something
+		case MENU_RETRY:
+			SceneManager.getInstance().createGameScene();
 			return true;
-		case PERK_SPEED:
-			//Do something
+		case MENU_MAIN:
+			//endGameChildScene.back();
+			onBackKeyPressed();
 			return true;
-			*/
+		case MENU_QUIT:
+			System.exit(0);
+			return true;
 		default:
 			return false;	
 		}

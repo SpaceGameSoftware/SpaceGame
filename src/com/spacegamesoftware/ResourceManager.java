@@ -49,6 +49,9 @@ public class ResourceManager {
 	public ITextureRegion achieveBackgroundRegion;
 	//end game menu
 	public ITextureRegion endGameBackgroundRegion;
+	public ITextureRegion retryButtonRegion;
+	public ITextureRegion quitButtonRegion;
+	public ITextureRegion menuButtonRegion;
 	//other
 	public ITextureRegion spaceshipRegion;
 	public ITextureRegion[] asteroidRegion;
@@ -260,9 +263,13 @@ public class ResourceManager {
 	private void loadEndGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/endgame/");
 		endGameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
-		endGameBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(achieveTextureAtlas, activity, "endgame_background.png");
-		//coinPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "coin.png");
-		//speedPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "speed.png");
+		endGameBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(endGameTextureAtlas, activity, "endgame_background.png");
+		
+		menuButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(endGameTextureAtlas, activity, "menuButton.png");
+		
+		retryButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(endGameTextureAtlas, activity, "retryButton.png");
+		
+		quitButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(endGameTextureAtlas, activity, "quitButton.png");
 
 		try {
 			this.achieveTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
