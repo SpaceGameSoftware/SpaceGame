@@ -1,7 +1,7 @@
 package com.spacegamesoftware;
 
 public class PlayerPerkData {
-	//model of data saved in Player table
+	//model of data saved in PlayerPerk table
 	private long id;
 	private int perkId;
 	

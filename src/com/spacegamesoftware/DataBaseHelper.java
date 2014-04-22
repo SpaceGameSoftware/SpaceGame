@@ -17,17 +17,59 @@ import android.util.Log;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 	private SQLiteDatabase myDataBase;
-	private static String TABLE_PLAYER = "Player"; //player table
-	public static String COLUMN_ID = "_id";
-	public static String COLUMN_COINS = "coins";
-	public static String COLUMN_DISTANCE = "distance";
-	public static String COLUMN_SCORE = "score";
-	
 	private static String DATABASE_NAME = "empty.db";
 	private static int DATABASE_VERSION = 1;
-	private String DATABASE_CREATE = String.format("create table %s " +
+	
+	private static String TABLE_PLAYER = "Player"; //player table
+	private static String TABLE_PERKS = "Perks";
+	private static String TABLE_ACHIEVEMENTS = "Achievements";
+	private static String TABLE_GAMES = "Games";
+	private static String TABLE_SETTINGS = "Settings";
+	private static String TABLE_PLAYER_PERKS= "PlayerPerks";
+	private static String TABLE_PLAYER_ACHIEVEMENTS = "PlayerAchievements";
+	
+	private static String COLUMN_ID = "_id";
+	private static String COLUMN_COINS = "coins";
+	private static String COLUMN_DISTANCE = "distance";
+	private static String COLUMN_SCORE = "score";
+	private static String COLUMN_DESCRIPTION = "description";
+	private static String COLUMN_VALUE = "value";
+	private static String COLUMN_PREREQ_ID = "prereqId";
+	private static String COLUMN_PLAYER_ID = "playerId";
+	private static String COLUMN_MUSIC_ON = "musicOn";
+	private static String COLUMN_EFFECTS_ON = "effectsOn";
+	private static String COLUMN_VIBRATE_ON = "vibrateOn";
+	private static String COLUMN_PERK_ID = "perkId";
+	private static String COLUMN_ACHIEVE_ID = "achieveId";
+	
+	private String PLAYER_TABLE_CREATE = String.format("create table %s " +
 			"( %s integer primary key, %s integer, %s integer, %s integer );",
 			TABLE_PLAYER, COLUMN_ID,COLUMN_COINS,COLUMN_DISTANCE,COLUMN_SCORE);
+	
+	private String PERK_TABLE_CREATE = String.format("create table %s " +
+			"( %s integer primary key, %s text, %s integer, %s integer );",
+			TABLE_PERKS, COLUMN_ID, COLUMN_DESCRIPTION, COLUMN_VALUE, COLUMN_PREREQ_ID);
+	
+	private String ACHIEVEMENTS_TABLE_CREATE = String.format("create table %s " +
+			"( %s integer primary key, %s text );",
+			TABLE_ACHIEVEMENTS, COLUMN_ID, COLUMN_DESCRIPTION);
+	
+	private String GAMES_TABLE_CREATE = String.format("create table %s " +
+			"( %s integer primary key, %s integer, %s integer, %s integer, %s integer);",
+			TABLE_GAMES, COLUMN_ID, COLUMN_COINS, COLUMN_DISTANCE, COLUMN_SCORE, COLUMN_PLAYER_ID);
+	
+	private String SETTINGS_TABLE_CREATE = String.format("create table %s " +
+			"( %s integer primary key, %s integer, %s integer, %s integer );",
+			TABLE_SETTINGS, COLUMN_ID, COLUMN_MUSIC_ON, COLUMN_EFFECTS_ON, COLUMN_VIBRATE_ON);
+	
+	private String PLAYER_PERKS_TABLE_CREATE = String.format("create table %s " +
+			"( %s integer primary key, %s integer );",
+			TABLE_PLAYER_PERKS, COLUMN_ID, COLUMN_PERK_ID);
+	
+	private String PLAYER_ACHIEVEMENTS_TABLE_CREATE = String.format("create table %s " +
+			"( %s integer primary key, %s integer );",
+			TABLE_PLAYER_ACHIEVEMENTS, COLUMN_ID, COLUMN_ACHIEVE_ID);
+	
 	
 	public DataBaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,17 +79,47 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		//TODO: create each table
+		//create Player table and insert values
+		db.execSQL(PLAYER_TABLE_CREATE);
+		ContentValues playerTableValues = new ContentValues();
+		playerTableValues.put("_id", 25);
+		playerTableValues.put("coins", 100);
+		playerTableValues.put("distance", 50);
+		playerTableValues.put("score", 205);
+		db.insert("Player", null, playerTableValues);
 		
-		//create Player table
-		db.execSQL(DATABASE_CREATE);
-		//populate table with data
-		ContentValues values = new ContentValues();
-		values.put("_id", 25);
-		values.put("coins", 100);
-		values.put("distance", 50);
-		values.put("score", 205);
-		db.insert("Player", null, values);
+		db.execSQL(PERK_TABLE_CREATE);
+		/*
+		 ContentValues playerTableValues = new ContentValues();
+		playerTableValues.put("_id", 25);
+		playerTableValues.put("coins", 100);
+		playerTableValues.put("distance", 50);
+		playerTableValues.put("score", 205);
+		db.insert("Player", null, playerTableValues);
+		 * */
+		db.execSQL(ACHIEVEMENTS_TABLE_CREATE);
+		/*
+		 ContentValues playerTableValues = new ContentValues();
+		playerTableValues.put("_id", 25);
+		playerTableValues.put("coins", 100);
+		playerTableValues.put("distance", 50);
+		playerTableValues.put("score", 205);
+		db.insert("Player", null, playerTableValues);
+		 * */
+		db.execSQL(GAMES_TABLE_CREATE);
+		
+		db.execSQL(SETTINGS_TABLE_CREATE);
+		/*
+		 ContentValues playerTableValues = new ContentValues();
+		playerTableValues.put("_id", 25);
+		playerTableValues.put("coins", 100);
+		playerTableValues.put("distance", 50);
+		playerTableValues.put("score", 205);
+		db.insert("Player", null, playerTableValues);
+		 * */
+		db.execSQL(PLAYER_PERKS_TABLE_CREATE);
+		
+		db.execSQL(PLAYER_ACHIEVEMENTS_TABLE_CREATE);
 	}
 
 	@Override
@@ -71,6 +143,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	
 	public static String getPlayerTable() {
 		return TABLE_PLAYER;
+	}
+	
+	public static String getColumnId() {
+		return COLUMN_ID;
+	}
+	
+	public static String getColumnCoins() {
+		return COLUMN_COINS;
+	}
+	
+	public static String getColumnDistance() {
+		return COLUMN_DISTANCE;
+	}
+	
+	public static String getColumnScore() {
+		return COLUMN_SCORE;
 	}
 	
 	public SQLiteDatabase getDataBase() {

@@ -1,7 +1,7 @@
 package com.spacegamesoftware;
 
 public class SettingsData {
-	//model of data saved in Player table
+	//model of data saved in Settings table
 	private long id;
 	private int musicOn;
 	private int effectsOn;
