@@ -76,7 +76,7 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 		
 		final IMenuItem coinPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_COIN, resourceManager.coinPerkRegion, vbom), 0.7f, 0.75f);
 		final IMenuItem speedPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_DISTANCE, resourceManager.speedPerkRegion, vbom), 0.7f, 0.75f);
-		final IMenuItem buyPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PERK_DISTANCE, resourceManager.speedPerkRegion, vbom), 0.7f, 0.75f);
+		final IMenuItem buyPerkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(BUY_BUTTON, resourceManager.buyPerkRegion, vbom), 0.7f, 0.75f);
 		
 		perkChildScene.addMenuItem(coinPerkMenuItem);
 		perkChildScene.addMenuItem(speedPerkMenuItem);
@@ -85,10 +85,10 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 		perkChildScene.buildAnimations();
 		perkChildScene.setBackgroundEnabled(false);
 
-		float x = 80;
-		coinPerkMenuItem.setPosition(x, coinPerkMenuItem.getY());
-		speedPerkMenuItem.setPosition(x, speedPerkMenuItem.getY());
-		buyPerkMenuItem.setPosition(x, buyPerkMenuItem.getY());
+		//float x = 80;
+		coinPerkMenuItem.setPosition(coinPerkMenuItem.getX(), coinPerkMenuItem.getY());
+		speedPerkMenuItem.setPosition(coinPerkMenuItem.getX(), speedPerkMenuItem.getY());
+		buyPerkMenuItem.setPosition(coinPerkMenuItem.getX(), buyPerkMenuItem.getY());
 
 		perkChildScene.setOnMenuItemClickListener(this);
 		setChildScene(perkChildScene);

@@ -45,6 +45,7 @@ public class ResourceManager {
 	public ITextureRegion perkBackgroundRegion;
 	public ITextureRegion coinPerkRegion;
 	public ITextureRegion speedPerkRegion;
+	public ITextureRegion buyPerkRegion;
 	//achievement menu
 	public ITextureRegion achieveBackgroundRegion;
 	//end game menu
@@ -190,8 +191,9 @@ public class ResourceManager {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/perk/");
 		perkTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
 		perkBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "perk_background.png");
-		coinPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "coin.png");
-		speedPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "speed.png");
+		coinPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "coinupgrade1.png");
+		speedPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "multiplierupgrade1.png");
+		buyPerkRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(perkTextureAtlas, activity, "buyButton.png");
 
 		try {
 			this.perkTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
@@ -260,15 +262,11 @@ public class ResourceManager {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/endgame/");
 		endGameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
 		endGameBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(endGameTextureAtlas, activity, "endgame_background.png");
-<<<<<<< HEAD
 		
 		menuButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(endGameTextureAtlas, activity, "menuButton.png");
-		
 		retryButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(endGameTextureAtlas, activity, "retryButton.png");
-		
 		quitButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(endGameTextureAtlas, activity, "quitButton.png");
-=======
->>>>>>> origin/DBUpdate
+
 
 		try {
 			this.achieveTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
