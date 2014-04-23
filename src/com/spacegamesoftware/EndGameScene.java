@@ -46,7 +46,7 @@ public class EndGameScene extends BaseScene implements IOnMenuItemClickListener 
 
 	private void createBackground() {
 		//change
-		endGameBackground = new Sprite(0, 0, resourceManager.endGameBackgroundRegion, vbom) {
+		endGameBackground = new Sprite(0, 0, resourceManager.menuBackgroundRegion, vbom) {
 
 			@Override
 			protected void preDraw(GLState glState, Camera camera) {
@@ -55,7 +55,6 @@ public class EndGameScene extends BaseScene implements IOnMenuItemClickListener 
 			}
 
 		};
-
 		endGameBackground.setScale(1.0f);
 		attachChild(endGameBackground);
 	}
