@@ -23,6 +23,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static int INIT_COINS = 0;
 	private static int INIT_DISTANCE = 0;
 	private static int INIT_SCORE = 0;
+	private static boolean dbCreate = false;
 
 	//Tables
 	private static String TABLE_PLAYER = "Player";
@@ -92,14 +93,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		//calls either, onCreate(), onUpgrade(), or onOpen()
 		this.myDataBase = this.getWritableDatabase();
 
-		//insert into respective DB tables
-		insertPlayerTable(PLAYER_ID, INIT_COINS, INIT_DISTANCE, INIT_SCORE);
-		insertPerkTable(0, "2x the distance multiplier.", 200, 0);
-		insertPerkTable(1, "3x the distance multiplier.", 400, 0);
-		insertPerkTable(2, "Coins with value of 2 appear.", 200, 0);
-		insertAchievementTable(0, "Go a distance of 10k.");
-		insertAchievementTable(1, "Collect 50 Space Coins.");
-		insertSettingsTable(0, 1, 0, 0);
+		if(dbCreate) {
+			//insert into respective DB tables
+			insertPlayerTable(PLAYER_ID, INIT_COINS, INIT_DISTANCE, INIT_SCORE);
+			insertPerkTable(0, "2x the distance multiplier.", 200, 0);
+			insertPerkTable(1, "3x the distance multiplier.", 400, 0);
+			insertPerkTable(2, "Coins with value of 2 appear.", 200, 0);
+			insertAchievementTable(0, "Go a distance of 10k.");
+			insertAchievementTable(1, "Collect 50 Space Coins.");
+			insertSettingsTable(0, 1, 0, 0);
+		}
 	}
 
 	@Override
@@ -112,6 +115,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		db.execSQL(SETTINGS_TABLE_CREATE);
 		db.execSQL(PLAYER_PERKS_TABLE_CREATE);
 		db.execSQL(PLAYER_ACHIEVEMENTS_TABLE_CREATE);
+		dbCreate = true;
 	}
 
 	@Override

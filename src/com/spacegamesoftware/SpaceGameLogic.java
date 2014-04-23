@@ -1,6 +1,7 @@
 package com.spacegamesoftware;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -154,11 +155,13 @@ public class SpaceGameLogic implements IUpdateHandler {
 		PlayerData player = ResourceManager.getInstance().DBHelper.getPlayer();
 		int coinBalance = player.getCoins();
 		int totalDistance = player.getDistance();
-		int randomInt = rand.nextInt(100000);
+		long currentTime;
+		Date date = new Date();
+		currentTime = date.getTime();
 		//save values into Games Table
 		coinBalance += coins;
 		totalDistance += distance;
-		ResourceManager.getInstance().DBHelper.insertGamesTable(randomInt, coins, distance, score, 
+		ResourceManager.getInstance().DBHelper.insertGamesTable(currentTime, coins, distance, score, 
 				ResourceManager.getInstance().DBHelper.getPlayerId());
 		//also update #coins and total distance in player table
 		ResourceManager.getInstance().DBHelper.updatePlayerTable(ResourceManager.getInstance().DBHelper.getPlayerId(), 
