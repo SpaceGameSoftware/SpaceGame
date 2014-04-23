@@ -107,7 +107,7 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 			buyPerk(perkId);
 			return true;
 		case PERK_COIN:
-			perkId = 0;
+			perkId = 6;
 			return true;
 		case PERK_DISTANCE:
 			perkId = 1;

@@ -466,7 +466,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		myDataBase.update(TABLE_PLAYER_PERKS, values, whereClause, null);
 	}
 
-	public PlayerPerkData createPlayerPerk(long id, int purchased) {
+	public PlayerPerkData createPlayerPerk(int id, int purchased) {
 		PlayerPerkData playerPerk = new PlayerPerkData();
 		playerPerk.setId(id);
 		playerPerk.setPurchased(purchased);
@@ -509,7 +509,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private PlayerPerkData cursorToPlayerPerk(Cursor cursor) {
 		//convert from cursor to player
 		PlayerPerkData playerPerk = new PlayerPerkData();
-		playerPerk.setId(cursor.getLong(0));
+		playerPerk.setId(cursor.getInt(0));
 		playerPerk.setPurchased(cursor.getInt(1));
 		return playerPerk;
 	}
