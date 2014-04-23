@@ -74,10 +74,10 @@ public class ResourceManager {
 	private BuildableBitmapTextureAtlas endGameTextureAtlas;
 	
 	//database variables
-	public PlayerDataSource PlayerDataSource;
+	public DataBaseHelper DBHelper;
 	public PlayerData player;
 	
-	//player info
+	//player info -- remove
 	int coins;
 	int distance;
 	int score;
@@ -87,11 +87,11 @@ public class ResourceManager {
 		getInstance().activity = activity;
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
-		getInstance().PlayerDataSource = new PlayerDataSource(activity);
+		getInstance().DBHelper = new DataBaseHelper(activity);
 		
 		try {
 			//get info from DB
-			getInstance().player = getInstance().PlayerDataSource.getPlayer();
+			getInstance().player = getInstance().DBHelper.getPlayer();
 			getInstance().coins = getInstance().player.getCoins();
 			getInstance().distance = getInstance().player.getDistance();
 			getInstance().score = getInstance().player.getScore();
