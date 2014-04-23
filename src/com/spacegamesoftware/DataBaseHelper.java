@@ -20,6 +20,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static String DATABASE_NAME = "SpaceGame.db";
 	private static int DATABASE_VERSION = 1;
 	
+	//Tables
 	private static String TABLE_PLAYER = "Player";
 	private static String TABLE_PERKS = "Perks";
 	private static String TABLE_ACHIEVEMENTS = "Achievements";
@@ -28,6 +29,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static String TABLE_PLAYER_PERKS= "PlayerPerks";
 	private static String TABLE_PLAYER_ACHIEVEMENTS = "PlayerAchievements";
 	
+	//Columns
 	private static String COLUMN_ID = "_id";
 	private static String COLUMN_COINS = "coins";
 	private static String COLUMN_DISTANCE = "distance";
@@ -42,6 +44,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static String COLUMN_PERK_ID = "perkId";
 	private static String COLUMN_ACHIEVE_ID = "achieveId";
 	
+	//table column collections
+	private static String[] allPlayerColumns = {COLUMN_ID, COLUMN_COINS, COLUMN_DISTANCE, COLUMN_SCORE};
+	private static String[] allPerkColumns = {COLUMN_ID, COLUMN_DESCRIPTION, COLUMN_VALUE, COLUMN_PREREQ_ID};
+	//Table Creation SQL statements
 	private String PLAYER_TABLE_CREATE = String.format("create table %s " +
 			"( %s integer primary key, %s integer, %s integer, %s integer );",
 			TABLE_PLAYER, COLUMN_ID,COLUMN_COINS,COLUMN_DISTANCE,COLUMN_SCORE);
@@ -81,12 +87,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		//create Player table and insert values
 		db.execSQL(PLAYER_TABLE_CREATE);
-		ContentValues playerTableValues = new ContentValues();
-		playerTableValues.put(COLUMN_ID, 25);
-		playerTableValues.put(COLUMN_COINS, 0);
-		playerTableValues.put(COLUMN_DISTANCE, 50);
-		playerTableValues.put(COLUMN_SCORE, 205);
-		db.insert(TABLE_PLAYER, null, playerTableValues);
+		
+		//ContentValues playerTableValues = new ContentValues();
+		//playerTableValues.put(COLUMN_ID, 25);
+		//playerTableValues.put(COLUMN_COINS, 0);
+		//playerTableValues.put(COLUMN_DISTANCE, 50);
+		//playerTableValues.put(COLUMN_SCORE, 205);
+		//db.insert(TABLE_PLAYER, null, playerTableValues);
+		
+		insertPlayerTable(db, 5, 10, 15, 20);
+		insertPerkTable(db, 0, "2x the distance multiplier", 200, 0);
 		
 		db.execSQL(PERK_TABLE_CREATE);
 		ContentValues perkTableValues = new ContentValues();
@@ -151,8 +161,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		//if db is created, read values from it.. maybe
 	}
 	
-	public void closeDataBase() {
-		//close database 
+	public void open() throws SQLException {
+	    myDataBase = getWritableDatabase();
+	  }
+	
+	public void closeDataBase() { 
 		myDataBase.close();
 	}
 	
@@ -179,4 +192,130 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	public SQLiteDatabase getDataBase() {
 		return myDataBase;
 	}
+
+	  /*******************************************************
+	   * 	PLAYER TABLE
+	   *******************************************************/
+	
+	public void insertPlayerTable(SQLiteDatabase db, long id, int coins, int distance, int score) {
+		  ContentValues values = new ContentValues();
+		  values.put(COLUMN_ID, id);
+		  values.put(COLUMN_COINS, coins);
+		  values.put(COLUMN_DISTANCE, distance);
+		  values.put(COLUMN_SCORE, score);
+		  db.insert(TABLE_PLAYER, null, values);
+	  }
+	
+	  public PlayerData createPlayer(long id, int coins, int distance, int score) {
+		  PlayerData player = new PlayerData();
+		  player.setId(id);
+		  player.setCoins(coins);
+		  player.setDistance(distance);
+		  player.setScore(score);
+		return player;
+	  }
+
+	  public void deletePlayer(PlayerData player) {
+		  //update
+	    long id = player.getId();
+	    System.out.println("Comment deleted with id: " + id);
+	    myDataBase.delete(DataBaseHelper.getPlayerTable(), DataBaseHelper.getColumnId()
+	        + " = " + id, null);
+	  }
+
+	  public PlayerData getPlayer() {
+		  PlayerData player = null;
+		  
+		  Cursor cursor = myDataBase.query(TABLE_PLAYER,
+			        allPlayerColumns, null, null, null, null, null);
+		  
+		  if(cursor.moveToFirst()) {
+			  player = cursorToPlayer(cursor);
+		  }
+		  
+		  cursor.close();
+		  return player;
+	  }
+	  
+	  private PlayerData cursorToPlayer(Cursor cursor) {
+		  //convert from cursor to player
+		  PlayerData player = new PlayerData();
+		  player.setId(cursor.getLong(0));
+		  player.setCoins(cursor.getInt(1));
+		  player.setDistance(cursor.getInt(2));
+		  player.setScore(cursor.getInt(3));
+	    return player;
+	  }
+	  
+	  /*******************************************************
+	   * 	PERK TABLE
+	   *******************************************************/
+	
+	public void insertPerkTable(SQLiteDatabase db, long id, String description, int value, int prereqId) {
+		  ContentValues values = new ContentValues();
+		  values.put(COLUMN_ID, id);
+		  values.put(COLUMN_DESCRIPTION, description);
+		  values.put(COLUMN_VALUE, value);
+		  values.put(COLUMN_PREREQ_ID, prereqId);
+		  db.insert(TABLE_PERKS, null, values);
+	  }
+	
+	  public PerkData createPerk(long id, int coins, int distance, int score) {
+		return null;
+	  }
+
+	  public void deletePerk(PlayerData player) {
+		  //update
+	    long id = player.getId();
+	    System.out.println("Comment deleted with id: " + id);
+	    myDataBase.delete(DataBaseHelper.getPlayerTable(), DataBaseHelper.getColumnId()
+	        + " = " + id, null);
+	  }
+
+	  public PerkData getPerk(int perkId) {
+		  PerkData perk = null;
+		  String whereClause = String.format("%s = ?",COLUMN_ID);
+		  String whereArgs[] = {String.format("%d", perkId)};
+		  Cursor cursor = myDataBase.query(TABLE_PERKS,
+			        allPerkColumns, whereClause, whereArgs, null, null, null);
+		  
+		  if(cursor.moveToFirst()) {
+			  perk = cursorToPerk(cursor);
+		  }
+		  
+		  cursor.close();
+		  return perk;
+	  }
+	  
+	  private PerkData cursorToPerk(Cursor cursor) {
+		  //convert from cursor to perk
+		  PerkData perk = new PerkData();
+		  perk.setId(cursor.getLong(0));
+		  perk.setDescription(cursor.getString(1));
+		  perk.setValue(cursor.getInt(2));
+		  perk.setPrereqId(cursor.getInt(3));
+	    return perk;
+	  }
 }
+
+
+
+/*
+public List<PlayerData> getAllPlayers() {
+	  //update
+  List<PlayerData> comments = new ArrayList<PlayerData>();
+
+  Cursor cursor = database.query(DataBaseHelper.TABLE_PLAYER,
+      allColumns, null, null, null, null, null);
+
+  cursor.moveToFirst();
+  while (!cursor.isAfterLast()) {
+  	PlayerData player = cursorToPlayer(cursor);
+    comments.add(player);
+    cursor.moveToNext();
+  }
+  // make sure to close the cursor
+  cursor.close();
+  return comments;
+}
+*/
