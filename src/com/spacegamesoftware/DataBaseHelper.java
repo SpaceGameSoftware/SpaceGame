@@ -324,6 +324,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		return highScore;
 	}
 	
+	public int getCumulativeScore() {
+		GameData gameInstance;
+		int cumulativeScore = 0;
+		Cursor cursor = myDataBase.query(TABLE_GAMES, allGameColumns, null, null, null, null, null);
+		cursor.moveToFirst();
+		while(!cursor.isAfterLast()) {
+			gameInstance = cursorToGame(cursor);
+			cumulativeScore += gameInstance.getScore();
+		}
+		return cumulativeScore;
+	}
+	
+	public int getCumulativeCoins() {
+		GameData gameInstance;
+		int cumulativeCoins = 0;
+		Cursor cursor = myDataBase.query(TABLE_GAMES, allGameColumns, null, null, null, null, null);
+		cursor.moveToFirst();
+		while(!cursor.isAfterLast()) {
+			gameInstance = cursorToGame(cursor);
+			cumulativeCoins += gameInstance.getCoins();
+		}
+		return cumulativeCoins;
+	}
+	
 	public GameData createGame(long id, int coins, int distance, int score, long playerId) {return null;}
 	public void deleteGame(GameData game) {}
 

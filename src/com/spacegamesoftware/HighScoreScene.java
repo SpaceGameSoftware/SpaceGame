@@ -65,17 +65,48 @@ public class HighScoreScene extends BaseScene {
 		int x = MainActivity.CAMERA_WIDTH / 3;
 		int y = MainActivity.CAMERA_HEIGHT / 2;
 		float scale = 2.0f;
+		int offset = 30;
 		hud = new HUD();
-		totalDistanceText = new Text(x, y, resourceManager.font, "Total Distance: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+		highScoreText = new Text(x, y, resourceManager.font, "High Score: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+		highScoreText.setSkewCenter(0, 0);
+		highScoreText.setScale(scale);
+		highScoreText.setText("High Score: " + getHighScore());
+		
+		totalScoreText = new Text(x, y + offset, resourceManager.font, "Cumulative Score: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+		totalScoreText.setSkewCenter(0, 0);
+		totalScoreText.setScale(scale);
+		totalScoreText.setText("Cumulative Score: " + getCumulativeHighScore());
+		
+		totalCoinsText = new Text(x, y + 2 * offset, resourceManager.font, "Total Coins Collected: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+		totalCoinsText.setSkewCenter(0, 0);
+		totalCoinsText.setScale(scale);
+		totalCoinsText.setText("Total Coins Collected: " + getCumulativeCoins());
+		
+		totalDistanceText = new Text(x, y + 3 * offset, resourceManager.font, "Total Distance: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
 		totalDistanceText.setSkewCenter(0, 0);
 		totalDistanceText.setScale(scale);
 		totalDistanceText.setText("Total Distance: " + getTotalDistance());
+		
+		hud.attachChild(highScoreText);
+		hud.attachChild(totalScoreText);
 		hud.attachChild(totalDistanceText);
 		camera.setHUD(hud);
 	}
 	
 	private int getTotalDistance() {
-		return ResourceManager.getInstance().player.getDistance();
+		PlayerData player = ResourceManager.getInstance().DBHelper.getPlayer();
+		return player.getDistance();
+	}
+	
+	private int getHighScore() {
+		return ResourceManager.getInstance().DBHelper.getHighScore();
+	}
+	
+	private int getCumulativeHighScore() {
+		return ResourceManager.getInstance().DBHelper.getCumulativeScore();
 	}
 
+	private int getCumulativeCoins() {
+		return ResourceManager.getInstance().DBHelper.getCumulativeCoins();
+	}
 }
