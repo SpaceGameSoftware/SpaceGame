@@ -102,8 +102,9 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	@Override
 	public boolean onMenuItemClicked(MenuScene menuScene, IMenuItem menuItem, float menuItemLocalX, float menuItemLocalY) {
 		switch (menuItem.getID()) {
+		//update perk id
 		case BUY_BUTTON:
-			buyPerk(0);
+			buyPerk(perkId);
 			return true;
 		case PERK_COIN:
 			perkId = 0;
@@ -126,8 +127,17 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	}
 	
 	private void buyPerk(int perkId) {
-		//if (ResourceManager.getInstance().getCoins() >= price) {
-			//buy
-		//}
+		PlayerData player = ResourceManager.getInstance().DBHelper.getPlayer();
+		//implement
+		PerkData perk = ResourceManager.getInstance().DBHelper.getPerk(perkId);
+		if ( player.getCoins() >= perk.getValue() ) {
+			int coinBalance = player.getCoins() - perk.getValue();
+			//update coin total in player table
+			ResourceManager.getInstance().DBHelper.updatePlayerTable(player.getId(), 
+					coinBalance, player.getDistance(), player.getScore() );
+			//update perk owned in PlayerPerkData
+			//ResourceManager.getInstance().DBHelper.updatePlayerPerkTable();
+			//implement perk in SpaceGameLogic/ResourceManager
+		}
 	}
 }

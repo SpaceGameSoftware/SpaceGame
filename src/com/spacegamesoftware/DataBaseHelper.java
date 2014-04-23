@@ -4,6 +4,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -49,14 +51,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static String COLUMN_PERK_ID = "perkId";
 	private static String COLUMN_ACHIEVE_ID = "achieveId";
 
+	private static String PERK_DISTANCE_MULTIPLIER_1_DESCRIP = "2x the distance multiplier.";
+	private static String PERK_DISTANCE_MULTIPLIER_2_DESCRIP = "3x the distance multiplier.";
+	private static String PERK_COIN_MULTIPLIER_1_DESCRIP = "Coins with value of 2 appear.";
+	private static int PERK_DISTANCE_MULTIPLIER_1_ID = 1;
+	private static int PERK_DISTANCE_MULTIPLIER_2_ID = 2;
+	private static int PERK_COIN_MULTIPLIER_1_ID = 6;
+	
 	//table column collections
 	private static String[] allPlayerColumns = {COLUMN_ID, COLUMN_COINS, COLUMN_DISTANCE, COLUMN_SCORE};
 	private static String[] allPerkColumns = {COLUMN_ID, COLUMN_DESCRIPTION, COLUMN_VALUE, COLUMN_PREREQ_ID};
 	private static String[] allAchievementColumns = {COLUMN_ID, COLUMN_DESCRIPTION};
 	private static String[] allGameColumns = {COLUMN_ID, COLUMN_COINS, COLUMN_DISTANCE, COLUMN_SCORE, COLUMN_PLAYER_ID};
 	private static String[] allSettingsColumns = {COLUMN_ID, COLUMN_MUSIC_ON, COLUMN_EFFECTS_ON, COLUMN_VIBRATE_ON};
-	private static String[] allHighScoreColumns = {};
-
+	private static String[] allPlayerPerkColumns = {COLUMN_ID, COLUMN_PERK_ID};
 
 	//Table Creation SQL statements
 	private String PLAYER_TABLE_CREATE = String.format("create table %s " +
@@ -96,9 +104,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		if(dbCreate) {
 			//insert into respective DB tables
 			insertPlayerTable(PLAYER_ID, INIT_COINS, INIT_DISTANCE, INIT_SCORE);
-			insertPerkTable(0, "2x the distance multiplier.", 200, 0);
-			insertPerkTable(1, "3x the distance multiplier.", 400, 0);
-			insertPerkTable(2, "Coins with value of 2 appear.", 200, 0);
+			insertPerkTable(PERK_DISTANCE_MULTIPLIER_1_ID, PERK_DISTANCE_MULTIPLIER_1_DESCRIP, 200, 0);
+			insertPerkTable(PERK_DISTANCE_MULTIPLIER_2_ID, PERK_DISTANCE_MULTIPLIER_2_DESCRIP, 400, 0);
+			insertPerkTable(PERK_COIN_MULTIPLIER_1_ID, PERK_COIN_MULTIPLIER_1_DESCRIP, 200, 0);
 			insertAchievementTable(0, "Go a distance of 10k.");
 			insertAchievementTable(1, "Collect 50 Space Coins.");
 			insertSettingsTable(0, 1, 0, 0);
@@ -231,6 +239,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		myDataBase.insert(TABLE_PERKS, null, values);
 	}
 
+	public void updatePerkTable(long id, String description, int value, int prereqId) {
+		String whereClause = String.format("%s = %d", COLUMN_ID, id);
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_ID, id);
+		values.put(COLUMN_DESCRIPTION, description);
+		values.put(COLUMN_VALUE, value);
+		values.put(COLUMN_PREREQ_ID, prereqId);
+		myDataBase.update(TABLE_PLAYER, values, whereClause, null);
+	}
+	
 	public PerkData createPerk(long id, int coins, int distance, int score) {return null;}
 	public void deletePerk(PlayerData player) {}
 
@@ -320,6 +338,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 			if(gameInstance.getScore() > highScore) {
 				highScore = gameInstance.getScore();
 			}
+			cursor.moveToNext();
 		}
 		return highScore;
 	}
@@ -332,6 +351,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		while(!cursor.isAfterLast()) {
 			gameInstance = cursorToGame(cursor);
 			cumulativeScore += gameInstance.getScore();
+			cursor.moveToNext();
 		}
 		return cumulativeScore;
 	}
@@ -344,6 +364,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		while(!cursor.isAfterLast()) {
 			gameInstance = cursorToGame(cursor);
 			cumulativeCoins += gameInstance.getCoins();
+			cursor.moveToNext();
 		}
 		return cumulativeCoins;
 	}
@@ -424,6 +445,73 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		settings.setEffectSetting(cursor.getInt(2));
 		settings.setVibrateSetting(cursor.getInt(3));
 		return settings;
+	}
+	
+	/*******************************************************
+	 * 	PLAYER PERK TABLE
+	 *******************************************************/
+
+	public void insertPlayerPerkTable(long id, int perkId) {
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_ID, id);
+		values.put(COLUMN_PERK_ID, perkId);
+		myDataBase.insert(TABLE_PLAYER_PERKS, null, values);
+	}
+
+	public void updatePlayerPerkTable(long id, int perkId) {
+		String whereClause = String.format("%s = %d", COLUMN_ID, perkId);
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_ID, id);
+		values.put(COLUMN_PERK_ID, perkId);
+		myDataBase.update(TABLE_PLAYER_PERKS, values, whereClause, null);
+	}
+
+	public PlayerPerkData createPlayerPerk(long id, int perkId) {
+		PlayerPerkData playerPerk = new PlayerPerkData();
+		playerPerk.setId(id);
+		playerPerk.setPerkId(perkId);
+		return playerPerk;
+	}
+
+	public void deletePlayerPerk(PlayerPerkData playerPerk) {}
+
+	public PlayerPerkData getPlayerPerk(int perkId) {
+		PlayerPerkData playerPerk = null;
+		String whereClause = String.format("%s = ?", COLUMN_ID);
+		String whereArgs[] = {String.format("%d", perkId)};
+		
+		Cursor cursor = myDataBase.query(TABLE_PLAYER_PERKS,
+				allPlayerPerkColumns, whereClause, whereArgs, null, null, null);		
+		
+		if(cursor.moveToFirst()) {
+			playerPerk = cursorToPlayerPerk(cursor);
+		}
+
+		cursor.close();
+		return playerPerk;
+	}
+	
+	public ArrayList<PlayerPerkData> getAllPlayerPerk() {
+		ArrayList<PlayerPerkData> playerPerks = new ArrayList<PlayerPerkData>();
+		PlayerPerkData perkData;
+		Cursor cursor = myDataBase.query(TABLE_PLAYER_PERKS,
+				allPlayerColumns, null, null, null, null, null);
+		cursor.moveToFirst();
+		while(!cursor.isAfterLast()) {
+			perkData = cursorToPlayerPerk(cursor);
+			playerPerks.add(perkData);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return playerPerks;
+	}
+
+	private PlayerPerkData cursorToPlayerPerk(Cursor cursor) {
+		//convert from cursor to player
+		PlayerPerkData playerPerk = new PlayerPerkData();
+		playerPerk.setId(cursor.getLong(0));
+		playerPerk.setPerkId(cursor.getInt(1));
+		return playerPerk;
 	}
 }
 
