@@ -20,15 +20,19 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	private MenuScene perkChildScene;
 	private Sprite perkBackground;
 	private HUD perkHUD;
+	private int coins;
 	private Text coinsText;
 	private final int BUY_BUTTON = 0;
 	private final int PERK_COIN = 1;
 	private final int PERK_DISTANCE = 2;
 
+	private PlayerData player;
 	private int perkId;
 	
 	@Override
 	public void createScene() {
+		player = ResourceManager.getInstance().DBHelper.getPlayer();
+		coins = player.getCoins();
 		createBackground();
 		createPerkChildScene();
 		createHUD();
@@ -113,12 +117,10 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	}
 	
 	private void createHUD() {
-		String initInput;
 		perkHUD = new HUD();
 		coinsText = new Text(20, 80, resourceManager.font, "Coins: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
 		coinsText.setSkewCenter(0, 0);
-		initInput = String.format("Coins: %d", ResourceManager.getInstance().getCoins());
-		coinsText.setText(initInput);
+		coinsText.setText( String.format("Coins: %d", coins) );
 		perkHUD.attachChild(coinsText);
 		camera.setHUD(perkHUD);
 	}
