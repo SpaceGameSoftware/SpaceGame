@@ -55,7 +55,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static String[] allAchievementColumns = {COLUMN_ID, COLUMN_DESCRIPTION};
 	private static String[] allGameColumns = {COLUMN_ID, COLUMN_COINS, COLUMN_DISTANCE, COLUMN_SCORE, COLUMN_PLAYER_ID};
 	private static String[] allSettingsColumns = {COLUMN_ID, COLUMN_MUSIC_ON, COLUMN_EFFECTS_ON, COLUMN_VIBRATE_ON};
-
+	private static String[] allHighScoreColumns = {};
 
 
 	//Table Creation SQL statements
@@ -309,7 +309,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		values.put(COLUMN_PLAYER_ID, playerId);
 		myDataBase.insert(TABLE_GAMES, null, values);
 	}
-
+	
+	public int getHighScore() {
+		GameData gameInstance;
+		int highScore = 0;
+		Cursor cursor = myDataBase.query(TABLE_GAMES, allGameColumns, null, null, null, null, null);
+		cursor.moveToFirst();
+		while(!cursor.isAfterLast()) {
+			gameInstance = cursorToGame(cursor);
+			if(gameInstance.getScore() > highScore) {
+				highScore = gameInstance.getScore();
+			}
+		}
+		return highScore;
+	}
+	
 	public GameData createGame(long id, int coins, int distance, int score, long playerId) {return null;}
 	public void deleteGame(GameData game) {}
 
