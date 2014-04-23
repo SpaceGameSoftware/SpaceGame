@@ -166,6 +166,7 @@ public class SpaceGameLogic implements IUpdateHandler {
 		
 		scene.disposeScene();
 		//change to END_GAME
+		//SceneManager.getInstance().createEndGameScene();
 		SceneManager.getInstance().setScene(SceneManager.SceneType.SCENE_MENU);
 	}
 

@@ -260,7 +260,7 @@ public class ResourceManager {
 	
 	private void loadEndGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/endgame/");
-		endGameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
+		endGameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 		endGameBackgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(endGameTextureAtlas, activity, "endgame_background.png");
 		
 		menuButtonRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(endGameTextureAtlas, activity, "menuButton.png");
@@ -269,8 +269,8 @@ public class ResourceManager {
 
 
 		try {
-			this.achieveTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
-			this.achieveTextureAtlas.load();
+			this.endGameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+			this.endGameTextureAtlas.load();
 		} catch (final TextureAtlasBuilderException e) {
 			Debug.e(e);
 		}
@@ -282,10 +282,6 @@ public class ResourceManager {
 	
 	private void loadEndGameAudio() {
 		
-	}
-	
-	public int getCoins() {
-		return coins;
 	}
 	
 }

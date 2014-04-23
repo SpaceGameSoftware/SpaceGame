@@ -36,7 +36,7 @@ public class EndGameScene extends BaseScene implements IOnMenuItemClickListener 
 
 	@Override
 	public SceneType getSceneType() {
-		return SceneType.SCENE_ACHIEVE;
+		return SceneType.SCENE_END_GAME;
 	}
 
 	@Override
