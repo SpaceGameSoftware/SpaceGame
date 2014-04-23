@@ -1,6 +1,7 @@
 package com.spacegamesoftware;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.andengine.audio.music.Music;
@@ -80,10 +81,11 @@ public class ResourceManager {
 	public DataBaseHelper DBHelper;
 	public PlayerData player;
 	
-	//player info -- remove
-	int coins;
-	int distance;
-	int score;
+	//perk variables
+	private ArrayList<PlayerPerkData> perks;
+	private boolean perkDistance1 = false;
+	private boolean perkDistance2 = false;
+	private boolean perkCoin1 = false;
 	
 	public static void prepareManager(Engine engine, MainActivity activity, Camera camera, VertexBufferObjectManager vbom) {
 		getInstance().engine = engine;
@@ -92,18 +94,9 @@ public class ResourceManager {
 		getInstance().vbom = vbom;
 		getInstance().DBHelper = new DataBaseHelper(activity);
 		getInstance().rand = new Random();
-		
-		try {
-			//get info from DB
-			getInstance().player = getInstance().DBHelper.getPlayer();
-			getInstance().coins = getInstance().player.getCoins();
-			getInstance().distance = getInstance().player.getDistance();
-			getInstance().score = getInstance().player.getScore();
-		} 
-		
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
+		//load player perks
+		getInstance().perks = getInstance().DBHelper.getAllPlayerPerk();
+		getInstance().loadPlayerPerks(getInstance().perks);
 	}
 	
 	public static ResourceManager getInstance() {
@@ -286,6 +279,17 @@ public class ResourceManager {
 	
 	private void loadEndGameAudio() {
 		
+	}
+	
+	private void loadPlayerPerks(ArrayList<PlayerPerkData> perks) {
+		for(int i =0; i < perks.size(); i++) {
+			switch(perks.get(i).getId()) {
+			case 1: perkDistance1 = true; break;
+			//case 2: perkDistance2 = true; break;
+			case 6: perkCoin1 = true; break;
+			default: break;
+			}
+		}
 	}
 	
 }

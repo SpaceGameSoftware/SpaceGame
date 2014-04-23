@@ -2,17 +2,17 @@ package com.spacegamesoftware;
 
 public class PlayerPerkData {
 	//model of data saved in PlayerPerk table
-	private long id;
+	private int id;
 	private int purchased;
 	
 	/*
 	 *  GETTERS AND SETTERS
 	 * */
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 	
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	
