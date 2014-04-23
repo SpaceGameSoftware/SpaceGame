@@ -8,6 +8,12 @@ public class Asteroid extends Sprite {
 
 	private Vector velocity;
 	
+	public Asteroid(float pX, float pY) {
+		this(pX, pY,
+				ResourceManager.getInstance().asteroidRegion[ResourceManager.getInstance().rand.nextInt(4)], 
+				ResourceManager.getInstance().vbom);
+	}
+	
 	public Asteroid(float pX, float pY,
 			ITextureRegion pTextureRegion,
 			VertexBufferObjectManager pSpriteVertexBufferObject) {
