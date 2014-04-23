@@ -89,10 +89,10 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 		perkChildScene.buildAnimations();
 		perkChildScene.setBackgroundEnabled(false);
 
-		//float x = 80;
-		coinPerkMenuItem.setPosition(coinPerkMenuItem.getX(), coinPerkMenuItem.getY());
-		speedPerkMenuItem.setPosition(coinPerkMenuItem.getX(), speedPerkMenuItem.getY());
-		buyPerkMenuItem.setPosition(coinPerkMenuItem.getX(), buyPerkMenuItem.getY());
+		float x = 40;
+		coinPerkMenuItem.setPosition(x, coinPerkMenuItem.getY());
+		speedPerkMenuItem.setPosition(x, speedPerkMenuItem.getY());
+		buyPerkMenuItem.setPosition(x, buyPerkMenuItem.getY());
 
 		perkChildScene.setOnMenuItemClickListener(this);
 		setChildScene(perkChildScene);
