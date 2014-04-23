@@ -106,6 +106,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 			SceneManager.getInstance().createAchieveScene();
 			return true;
 		case MENU_HIGHSCORE:
+			SceneManager.getInstance().createHighScoreScene();
 			return true;
 		case MENU_SETTINGS:
 			return true;

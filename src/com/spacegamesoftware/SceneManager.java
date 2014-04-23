@@ -11,6 +11,7 @@ public class SceneManager {
 	private BaseScene loadingScene;
 	private BaseScene perkScene;
 	private BaseScene achieveScene;
+	private BaseScene highScoreScene;
 	private BaseScene endGameScene;
 	
 	private static final SceneManager INSTANCE = new SceneManager();
@@ -65,6 +66,11 @@ public class SceneManager {
 		ResourceManager.getInstance().loadEndGameResources();
 		gameScene = new EndGameScene();
 		setScene(endGameScene);
+	}
+	
+	public void createHighScoreScene() {
+		highScoreScene = new HighScoreScene();
+		setScene(highScoreScene);
 	}
 	
 	public void setScene(BaseScene scene) {
