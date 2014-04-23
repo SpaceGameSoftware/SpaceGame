@@ -19,6 +19,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private SQLiteDatabase myDataBase;
 	private static String DATABASE_NAME = "SpaceGame.db";
 	private static int DATABASE_VERSION = 1;
+	private static long PLAYER_ID = 1;
+	private static int INIT_COINS = 0;
+	private static int INIT_DISTANCE = 0;
+	private static int INIT_SCORE = 0;
 	
 	//Tables
 	private static String TABLE_PLAYER = "Player";
@@ -47,6 +51,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	//table column collections
 	private static String[] allPlayerColumns = {COLUMN_ID, COLUMN_COINS, COLUMN_DISTANCE, COLUMN_SCORE};
 	private static String[] allPerkColumns = {COLUMN_ID, COLUMN_DESCRIPTION, COLUMN_VALUE, COLUMN_PREREQ_ID};
+	private static String[] allAchievementColumns = {COLUMN_ID, COLUMN_DESCRIPTION};
+	private static String[] allGameColumns = {COLUMN_ID, COLUMN_COINS, COLUMN_DISTANCE, COLUMN_SCORE, COLUMN_PLAYER_ID};
+	private static String[] allSettingsColumns = {COLUMN_ID, COLUMN_MUSIC_ON, COLUMN_EFFECTS_ON, COLUMN_VIBRATE_ON};
+	
+	
+	
 	//Table Creation SQL statements
 	private String PLAYER_TABLE_CREATE = String.format("create table %s " +
 			"( %s integer primary key, %s integer, %s integer, %s integer );",
@@ -81,85 +91,34 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		//calls either, onCreate(), onUpgrade(), or onOpen()
 		 this.myDataBase = this.getWritableDatabase();
+		 
+		//insert into respective DB tables
+			insertPlayerTable(PLAYER_ID, INIT_COINS, INIT_DISTANCE, INIT_SCORE);
+			insertPerkTable(0, "2x the distance multiplier.", 200, 0);
+			insertPerkTable(1, "3x the distance multiplier.", 400, 0);
+			insertPerkTable(2, "Coins with value of 2 appear.", 200, 0);
+			insertAchievementTable(0, "Go a distance of 10k.");
+			insertAchievementTable(1, "Collect 50 Space Coins.");
+			insertSettingsTable(0, 1, 0, 0);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		//create Player table and insert values
+		//create DB tables
 		db.execSQL(PLAYER_TABLE_CREATE);
-		
-		//ContentValues playerTableValues = new ContentValues();
-		//playerTableValues.put(COLUMN_ID, 25);
-		//playerTableValues.put(COLUMN_COINS, 0);
-		//playerTableValues.put(COLUMN_DISTANCE, 50);
-		//playerTableValues.put(COLUMN_SCORE, 205);
-		//db.insert(TABLE_PLAYER, null, playerTableValues);
-		
-		insertPlayerTable(db, 5, 10, 15, 20);
-		insertPerkTable(db, 0, "2x the distance multiplier", 200, 0);
-		
 		db.execSQL(PERK_TABLE_CREATE);
-		ContentValues perkTableValues = new ContentValues();
-		perkTableValues.put(COLUMN_ID, 0);
-		perkTableValues.put(COLUMN_DESCRIPTION, "2x the distance multiplier.");
-		perkTableValues.put(COLUMN_VALUE, 200);
-		perkTableValues.put(COLUMN_PREREQ_ID, 0);
-		db.insert(TABLE_PERKS, null, perkTableValues);
-		
-		perkTableValues = new ContentValues();
-		perkTableValues.put(COLUMN_ID, 1);
-		perkTableValues.put(COLUMN_DESCRIPTION, "3x the distance multiplier.");
-		perkTableValues.put(COLUMN_VALUE, 400);
-		perkTableValues.put(COLUMN_PREREQ_ID, 0);
-		db.insert(TABLE_PERKS, null, perkTableValues);
-		
-		perkTableValues = new ContentValues();
-		perkTableValues.put(COLUMN_ID, 2);
-		perkTableValues.put(COLUMN_DESCRIPTION, "Coins with value of 2 appear.");
-		perkTableValues.put(COLUMN_VALUE, 200);
-		perkTableValues.put(COLUMN_PREREQ_ID, 0);
-		db.insert(TABLE_PERKS, null, perkTableValues);
-		
 		db.execSQL(ACHIEVEMENTS_TABLE_CREATE);
-		ContentValues achievementTableValues = new ContentValues();
-		achievementTableValues.put(COLUMN_ID, 0);
-		achievementTableValues.put(COLUMN_DESCRIPTION, "Go a distance of 10k.");
-		db.insert(TABLE_ACHIEVEMENTS, null, achievementTableValues);
-		
-		achievementTableValues = new ContentValues();
-		achievementTableValues.put(COLUMN_ID, 1);
-		achievementTableValues.put(COLUMN_DESCRIPTION, "Collect 50 Space Coins.");
-		db.insert(TABLE_ACHIEVEMENTS, null, achievementTableValues);
-		
-		
 		db.execSQL(GAMES_TABLE_CREATE);
-		
 		db.execSQL(SETTINGS_TABLE_CREATE);
-		ContentValues settingsTableValues = new ContentValues();
-		settingsTableValues.put(COLUMN_ID, 0);
-		settingsTableValues.put(COLUMN_MUSIC_ON, 1);
-		settingsTableValues.put(COLUMN_EFFECTS_ON, 0);
-		settingsTableValues.put(COLUMN_VIBRATE_ON, 0);
-		db.insert(TABLE_SETTINGS, null, settingsTableValues);
-
 		db.execSQL(PLAYER_PERKS_TABLE_CREATE);
-		
 		db.execSQL(PLAYER_ACHIEVEMENTS_TABLE_CREATE);
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		//Log.w(MySQLiteHelper.class.getName(),
-		//        "Upgrading database from version " + oldVersion + " to "
-		//            + newVersion + ", which will destroy all old data");
-		//    db.execSQL("DROP TABLE IF EXISTS " + TABLE_COMMENTS);
-		//    onCreate(db);
-	}
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 	
 	@Override
-	public void onOpen(SQLiteDatabase db) {
-		//if db is created, read values from it.. maybe
-	}
+	public void onOpen(SQLiteDatabase db) {}
 	
 	public void open() throws SQLException {
 	    myDataBase = getWritableDatabase();
@@ -197,13 +156,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	   * 	PLAYER TABLE
 	   *******************************************************/
 	
-	public void insertPlayerTable(SQLiteDatabase db, long id, int coins, int distance, int score) {
+	public void insertPlayerTable(long id, int coins, int distance, int score) {
 		  ContentValues values = new ContentValues();
 		  values.put(COLUMN_ID, id);
 		  values.put(COLUMN_COINS, coins);
 		  values.put(COLUMN_DISTANCE, distance);
 		  values.put(COLUMN_SCORE, score);
-		  db.insert(TABLE_PLAYER, null, values);
+		  myDataBase.insert(TABLE_PLAYER, null, values);
 	  }
 	
 	  public PlayerData createPlayer(long id, int coins, int distance, int score) {
@@ -212,16 +171,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		  player.setCoins(coins);
 		  player.setDistance(distance);
 		  player.setScore(score);
-		return player;
+		  return player;
 	  }
 
-	  public void deletePlayer(PlayerData player) {
-		  //update
-	    long id = player.getId();
-	    System.out.println("Comment deleted with id: " + id);
-	    myDataBase.delete(DataBaseHelper.getPlayerTable(), DataBaseHelper.getColumnId()
-	        + " = " + id, null);
-	  }
+	  public void deletePlayer(PlayerData player) {}
 
 	  public PlayerData getPlayer() {
 		  PlayerData player = null;
@@ -251,30 +204,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	   * 	PERK TABLE
 	   *******************************************************/
 	
-	public void insertPerkTable(SQLiteDatabase db, long id, String description, int value, int prereqId) {
+	public void insertPerkTable(long id, String description, int value, int prereqId) {
 		  ContentValues values = new ContentValues();
 		  values.put(COLUMN_ID, id);
 		  values.put(COLUMN_DESCRIPTION, description);
 		  values.put(COLUMN_VALUE, value);
 		  values.put(COLUMN_PREREQ_ID, prereqId);
-		  db.insert(TABLE_PERKS, null, values);
+		  myDataBase.insert(TABLE_PERKS, null, values);
 	  }
 	
-	  public PerkData createPerk(long id, int coins, int distance, int score) {
-		return null;
-	  }
-
-	  public void deletePerk(PlayerData player) {
-		  //update
-	    long id = player.getId();
-	    System.out.println("Comment deleted with id: " + id);
-	    myDataBase.delete(DataBaseHelper.getPlayerTable(), DataBaseHelper.getColumnId()
-	        + " = " + id, null);
-	  }
+	  public PerkData createPerk(long id, int coins, int distance, int score) {return null;}
+	  public void deletePerk(PlayerData player) {}
 
 	  public PerkData getPerk(int perkId) {
 		  PerkData perk = null;
-		  String whereClause = String.format("%s = ?",COLUMN_ID);
+		  String whereClause = String.format("%s = ?", COLUMN_ID);
 		  String whereArgs[] = {String.format("%d", perkId)};
 		  Cursor cursor = myDataBase.query(TABLE_PERKS,
 			        allPerkColumns, whereClause, whereArgs, null, null, null);
@@ -295,6 +239,135 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		  perk.setValue(cursor.getInt(2));
 		  perk.setPrereqId(cursor.getInt(3));
 	    return perk;
+	  }
+	  
+	  /*******************************************************
+	   * 	ACHIEVEMENTS TABLE
+	   *******************************************************/
+	
+	public void insertAchievementTable(long id, String description) {
+		ContentValues values = new ContentValues();
+		  values.put(COLUMN_ID, id);
+		  values.put(COLUMN_DESCRIPTION, description);
+		  myDataBase.insert(TABLE_ACHIEVEMENTS, null, values);
+	  }
+	
+	  public AchievementData createAchievement(long id, String description) {return null;}
+	  public void deleteAchievement(AchievementData achievement) {}
+
+	  public AchievementData getAchievement(int achievementId) {
+		  AchievementData achievement = null;
+		  String whereClause = String.format("%s = ?", COLUMN_ID);
+		  String whereArgs[] = {String.format("%d", achievementId)};
+		  Cursor cursor = myDataBase.query(TABLE_ACHIEVEMENTS,
+			        allAchievementColumns, whereClause, whereArgs, null, null, null);
+		  
+		  if(cursor.moveToFirst()) {
+			  achievement = cursorToAchievement(cursor);
+		  }
+		  
+		  cursor.close();
+		  return achievement;
+	  }
+	  
+	  private AchievementData cursorToAchievement(Cursor cursor) {
+		  //convert from cursor to perk
+		  AchievementData achievement = new AchievementData();
+		  achievement.setId(cursor.getLong(0));
+		  achievement.setDescription(cursor.getString(1));
+	    return achievement;
+	  }
+	  
+	  /*******************************************************
+	   * 	GAMES TABLE
+	   *******************************************************/
+	
+	public void insertGamesTable(long id, int coins, int distance, int score, long playerId) {
+		  ContentValues values = new ContentValues();
+		  values.put(COLUMN_ID, id);
+		  values.put(COLUMN_COINS, coins);
+		  values.put(COLUMN_DISTANCE, distance);
+		  values.put(COLUMN_SCORE, score);
+		  values.put(COLUMN_PLAYER_ID, playerId);
+		  myDataBase.insert(TABLE_GAMES, null, values);
+	  }
+	
+	  public GameData createGame(long id, int coins, int distance, int score, long playerId) {return null;}
+	  public void deleteGame(GameData game) {}
+
+	  public GameData getGame(int gameId) {
+		  GameData game = null;
+		  String whereClause = String.format("%s = ?", COLUMN_ID);
+		  String whereArgs[] = {String.format("%d", gameId)};
+		  Cursor cursor = myDataBase.query(TABLE_GAMES,
+			        allGameColumns, whereClause, whereArgs, null, null, null);
+		  
+		  if(cursor.moveToFirst()) {
+			  game = cursorToGame(cursor);
+		  }
+		  
+		  cursor.close();
+		  return game;
+	  }
+	  
+	  private GameData cursorToGame(Cursor cursor) {
+		  //convert from cursor to perk
+		  GameData game = new GameData();
+		  game.setId(cursor.getLong(0));
+		  game.setCoins(cursor.getInt(1));
+		  game.setDistance(cursor.getInt(2));
+		  game.setScore(cursor.getInt(3));
+		  game.setPlayerId(cursor.getLong(4));
+	    return game;
+	  }
+	  
+	  /*******************************************************
+	   * 	SETTINGS TABLE
+	   *******************************************************/
+	
+	public void insertSettingsTable(long id, int musicOn, int effectsOn, int vibrateOn) {
+		  ContentValues values = new ContentValues();
+		  values.put(COLUMN_ID, id);
+		  values.put(COLUMN_MUSIC_ON, musicOn);
+		  values.put(COLUMN_EFFECTS_ON, effectsOn);
+		  values.put(COLUMN_VIBRATE_ON, vibrateOn);
+		  myDataBase.insert(TABLE_SETTINGS, null, values);
+	  }
+	
+	  public SettingsData createSettings(long id, int musicOn, int effectsOn, int vibrateOn) {
+		  SettingsData settings = new SettingsData();
+		  settings.setId(id);
+		  settings.setMusicSetting(musicOn);
+		  settings.setEffectSetting(effectsOn);
+		  settings.setVibrateSetting(vibrateOn);
+		  return settings;
+		  }
+	  
+	  public void deleteSettings(SettingsData settings) {}
+
+	  public SettingsData getSettings(long settingsId) {
+		  SettingsData settings = null;
+		  String whereClause = String.format("%s = ?", COLUMN_ID);
+		  String whereArgs[] = {String.format("%d", settingsId)};
+		  Cursor cursor = myDataBase.query(TABLE_SETTINGS,
+			        allSettingsColumns, whereClause, whereArgs, null, null, null);
+		  
+		  if(cursor.moveToFirst()) {
+			  settings = cursorToSettings(cursor);
+		  }
+		  
+		  cursor.close();
+		  return settings;
+	  }
+	  
+	  private SettingsData cursorToSettings(Cursor cursor) {
+		  //convert from cursor to perk
+		  SettingsData settings = new SettingsData();
+		  settings.setId(cursor.getLong(0));
+		  settings.setMusicSetting(cursor.getInt(1));
+		  settings.setEffectSetting(cursor.getInt(2));
+		  settings.setVibrateSetting(cursor.getInt(3));
+	    return settings;
 	  }
 }
 
