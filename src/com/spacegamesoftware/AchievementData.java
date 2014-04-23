@@ -20,7 +20,7 @@ public class AchievementData {
 		return description;
 	}
 	
-	public void setCoins(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 	
