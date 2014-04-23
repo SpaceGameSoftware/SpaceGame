@@ -136,7 +136,8 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 			ResourceManager.getInstance().DBHelper.updatePlayerTable(player.getId(), 
 					coinBalance, player.getDistance(), player.getScore() );
 			//update perk owned in PlayerPerkData
-			//ResourceManager.getInstance().DBHelper.updatePlayerPerkTable();
+			//ResourceManager.getInstance().DBHelper.updatePlayerPerkTable(perkId, 1);
+			ResourceManager.getInstance().DBHelper.insertPlayerPerkTable(perkId, 1);
 			//implement perk in SpaceGameLogic/ResourceManager
 		}
 	}

@@ -48,7 +48,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static String COLUMN_MUSIC_ON = "musicOn";
 	private static String COLUMN_EFFECTS_ON = "effectsOn";
 	private static String COLUMN_VIBRATE_ON = "vibrateOn";
-	private static String COLUMN_PERK_ID = "perkId";
+	private static String COLUMN_PERK_PURCHASED = "purchased";
 	private static String COLUMN_ACHIEVE_ID = "achieveId";
 
 	private static String PERK_DISTANCE_MULTIPLIER_1_DESCRIP = "2x the distance multiplier.";
@@ -64,7 +64,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static String[] allAchievementColumns = {COLUMN_ID, COLUMN_DESCRIPTION};
 	private static String[] allGameColumns = {COLUMN_ID, COLUMN_COINS, COLUMN_DISTANCE, COLUMN_SCORE, COLUMN_PLAYER_ID};
 	private static String[] allSettingsColumns = {COLUMN_ID, COLUMN_MUSIC_ON, COLUMN_EFFECTS_ON, COLUMN_VIBRATE_ON};
-	private static String[] allPlayerPerkColumns = {COLUMN_ID, COLUMN_PERK_ID};
+	private static String[] allPlayerPerkColumns = {COLUMN_ID, COLUMN_PERK_PURCHASED};
 
 	//Table Creation SQL statements
 	private String PLAYER_TABLE_CREATE = String.format("create table %s " +
@@ -89,7 +89,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	private String PLAYER_PERKS_TABLE_CREATE = String.format("create table %s " +
 			"( %s integer primary key, %s integer );",
-			TABLE_PLAYER_PERKS, COLUMN_ID, COLUMN_PERK_ID);
+			TABLE_PLAYER_PERKS, COLUMN_ID, COLUMN_PERK_PURCHASED);
 
 	private String PLAYER_ACHIEVEMENTS_TABLE_CREATE = String.format("create table %s " +
 			"( %s integer primary key, %s integer );",
@@ -451,25 +451,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	 * 	PLAYER PERK TABLE
 	 *******************************************************/
 
-	public void insertPlayerPerkTable(long id, int perkId) {
+	public void insertPlayerPerkTable(long id, int purchased) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_ID, id);
-		values.put(COLUMN_PERK_ID, perkId);
+		values.put(COLUMN_PERK_PURCHASED, purchased);
 		myDataBase.insert(TABLE_PLAYER_PERKS, null, values);
 	}
 
-	public void updatePlayerPerkTable(long id, int perkId) {
-		String whereClause = String.format("%s = %d", COLUMN_ID, perkId);
+	public void updatePlayerPerkTable(long id, int purchased) {
+		String whereClause = String.format("%s = %d", COLUMN_ID, purchased);
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_ID, id);
-		values.put(COLUMN_PERK_ID, perkId);
+		values.put(COLUMN_PERK_PURCHASED, purchased);
 		myDataBase.update(TABLE_PLAYER_PERKS, values, whereClause, null);
 	}
 
-	public PlayerPerkData createPlayerPerk(long id, int perkId) {
+	public PlayerPerkData createPlayerPerk(long id, int purchased) {
 		PlayerPerkData playerPerk = new PlayerPerkData();
 		playerPerk.setId(id);
-		playerPerk.setPerkId(perkId);
+		playerPerk.setPurchased(purchased);
 		return playerPerk;
 	}
 
@@ -495,7 +495,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		ArrayList<PlayerPerkData> playerPerks = new ArrayList<PlayerPerkData>();
 		PlayerPerkData perkData;
 		Cursor cursor = myDataBase.query(TABLE_PLAYER_PERKS,
-				allPlayerColumns, null, null, null, null, null);
+				allPlayerPerkColumns, null, null, null, null, null);
 		cursor.moveToFirst();
 		while(!cursor.isAfterLast()) {
 			perkData = cursorToPlayerPerk(cursor);
@@ -510,7 +510,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		//convert from cursor to player
 		PlayerPerkData playerPerk = new PlayerPerkData();
 		playerPerk.setId(cursor.getLong(0));
-		playerPerk.setPerkId(cursor.getInt(1));
+		playerPerk.setPurchased(cursor.getInt(1));
 		return playerPerk;
 	}
 }
