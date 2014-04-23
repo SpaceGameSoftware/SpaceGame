@@ -2,26 +2,26 @@ package com.spacegamesoftware;
 
 public class PlayerPerkData {
 	//model of data saved in PlayerPerk table
-	private long id;
-	private int perkId;
+	private int id;
+	private int purchased;
 	
 	/*
 	 *  GETTERS AND SETTERS
 	 * */
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 	
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	
-	public int getPerkId() {
-		return perkId;
+	public int getPurchased() {
+		return purchased;
 	}
 	
-	public void setPerkId(int id) {
-		this.perkId = id;
+	public void setPurchased(int purchase) {
+		this.purchased = purchase;
 	}
 	
 	/*
@@ -30,7 +30,7 @@ public class PlayerPerkData {
 	
 	public String toString() {
 		//used by ArrayAdapter
-		String output = String.format("%d %d", id, perkId);
+		String output = String.format("%d %d", id, purchased);
 		return output;
 	}
 
