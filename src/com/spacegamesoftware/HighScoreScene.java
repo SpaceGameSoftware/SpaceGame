@@ -41,8 +41,14 @@ public class HighScoreScene extends BaseScene {
 	public void disposeScene() {
 		totalDistanceText.detachSelf();
 		totalDistanceText.dispose();
+		highScoreText.detachSelf();
+		highScoreText.dispose();
+		totalCoinsText.detachSelf();
+		totalCoinsText.dispose();
 		hud.detachSelf();
 		hud.dispose();
+		totalScoreText.detachSelf();
+		totalScoreText.dispose();
 		this.detachSelf();
 		this.dispose();
 	}
@@ -65,7 +71,7 @@ public class HighScoreScene extends BaseScene {
 		int x = MainActivity.CAMERA_WIDTH / 3;
 		int y = MainActivity.CAMERA_HEIGHT / 2;
 		float scale = 2.0f;
-		int offset = 30;
+		int offset = 150;
 		hud = new HUD();
 		highScoreText = new Text(x, y, resourceManager.font, "High Score: 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
 		highScoreText.setSkewCenter(0, 0);

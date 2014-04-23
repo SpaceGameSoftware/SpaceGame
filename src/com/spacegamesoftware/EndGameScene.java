@@ -27,6 +27,7 @@ public class EndGameScene extends BaseScene implements IOnMenuItemClickListener 
 	public void createScene() {
 		createBackground();
 		createEndGameChildScene();
+		
 	}
 
 	@Override
@@ -41,7 +42,12 @@ public class EndGameScene extends BaseScene implements IOnMenuItemClickListener 
 
 	@Override
 	public void disposeScene() {
-		// TODO Auto-generated method stub
+		endGameBackground.detachSelf();
+		endGameChildScene.detachChildren();
+		endGameChildScene.detachSelf();
+		endGameChildScene.dispose();
+		this.detachSelf();
+		this.dispose();
 	}
 
 	private void createBackground() {
@@ -92,11 +98,12 @@ public class EndGameScene extends BaseScene implements IOnMenuItemClickListener 
 	public boolean onMenuItemClicked(MenuScene menuScene, IMenuItem menuItem, float menuItemLocalX, float menuItemLocalY) {
 		switch (menuItem.getID()) {
 		case MENU_RETRY:
+			disposeScene();
 			SceneManager.getInstance().createGameScene();
 			return true;
 		case MENU_MAIN:
-			//endGameChildScene.back();
-			onBackKeyPressed();
+			disposeScene();
+			SceneManager.getInstance().setScene(SceneManager.SceneType.SCENE_MENU);
 			return true;
 		case MENU_QUIT:
 			System.exit(0);

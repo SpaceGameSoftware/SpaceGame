@@ -64,7 +64,7 @@ public class SceneManager {
 	
 	public void createEndGameScene() {
 		ResourceManager.getInstance().loadEndGameResources();
-		gameScene = new EndGameScene();
+		endGameScene = new EndGameScene();
 		setScene(endGameScene);
 	}
 	
@@ -76,6 +76,9 @@ public class SceneManager {
 	public void setScene(BaseScene scene) {
 		engine.setScene(scene);
 		currentScene = scene;
+		if (scene.getSceneType() == SceneType.SCENE_GAME) {
+			System.out.println("SCENE_GAME");
+		}
 		currentSceneType = scene.getSceneType();
 	}
 	
