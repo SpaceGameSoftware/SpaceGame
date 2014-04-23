@@ -151,18 +151,18 @@ public class SpaceGameLogic implements IUpdateHandler {
 	}
 	
 	private void onGameOver() {
-		//save values into DB
-		GameData game = new GameData();
-		//refactor
+		PlayerData player = ResourceManager.getInstance().DBHelper.getPlayer();
+		int coinBalance = player.getCoins();
+		int totalDistance = player.getDistance();
 		int randomInt = rand.nextInt(100000);
-		game.setId(randomInt);
-		game.setCoins(coins);
-		game.setDistance(distance);
-		game.setScore(score);
-		game.setPlayerId(25);
-		//insert into game table
-		
-		//also update #coins in player table
+		//save values into Games Table
+		coinBalance += coins;
+		totalDistance += distance;
+		ResourceManager.getInstance().DBHelper.insertGamesTable(randomInt, coins, distance, score, 
+				ResourceManager.getInstance().DBHelper.getPlayerId());
+		//also update #coins and total distance in player table
+		ResourceManager.getInstance().DBHelper.updatePlayerTable(ResourceManager.getInstance().DBHelper.getPlayerId(), 
+				coinBalance, totalDistance, score);
 		
 		scene.disposeScene();
 		//change to END_GAME
