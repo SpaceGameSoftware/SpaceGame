@@ -9,6 +9,10 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 public class Spaceship extends Sprite  implements IOnSceneTouchListener {
 
+	public Spaceship(float pX, float pY) {
+		this(pX, pY, ResourceManager.getInstance().spaceshipRegion, ResourceManager.getInstance().vbom);
+	}
+	
 	public Spaceship(float pX, float pY,
 			ITextureRegion pTextureRegion,
 			VertexBufferObjectManager pSpriteVertexBufferObject) {
@@ -31,9 +35,13 @@ public class Spaceship extends Sprite  implements IOnSceneTouchListener {
 			return true;
 		}
 		else if(event.isActionMove()) {
+			int w = MainActivity.CAMERA_WIDTH;
 			float dx = x - lastX;
-			setPosition(mX + dx, mY);
-			lastX = x;
+			float newX = mX + dx;
+			if (newX >= 0 && newX + mWidth < w) {
+				setPosition(newX, mY);
+				lastX = x;
+			}
 			return true;
 		}
 		return false;

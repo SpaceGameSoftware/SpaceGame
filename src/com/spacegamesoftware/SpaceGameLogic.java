@@ -30,7 +30,7 @@ public class SpaceGameLogic implements IUpdateHandler {
 		coins = 0;
 		asteroids = new ArrayList<Asteroid>();
 		coinList = new ArrayList<Coin>();
-		rand = new Random();
+		rand = ResourceManager.getInstance().rand;
 	}
 	
 	private float timeSinceDistance = 0;
@@ -139,7 +139,7 @@ public class SpaceGameLogic implements IUpdateHandler {
 	
 	private Coin createCoin() {
 		float x = (float) rand.nextInt(MainActivity.CAMERA_WIDTH);
-		Coin coin = new Coin(x, 0.0f, ResourceManager.getInstance().coinRegion,ResourceManager.getInstance().vbom);
+		Coin coin = new Coin(x, 0.0f, 1);
 		coin.setVelocity(new Vector(0.0f, 6.5f));
 		coin.setValue(1);
 		scene.attachChild(coin);

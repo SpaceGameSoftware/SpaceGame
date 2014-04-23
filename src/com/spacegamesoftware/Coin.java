@@ -9,6 +9,11 @@ public class Coin extends Sprite {
 	private Vector velocity;
 	private int value;
 	
+	public Coin(float pX, float pY, int value) {
+		this(pX, pY, ResourceManager.getInstance().coinRegion, ResourceManager.getInstance().vbom);
+		this.value = value;
+	}
+	
 	public Coin(float pX, float pY,
 			ITextureRegion pTextureRegion,
 			VertexBufferObjectManager pSpriteVertexBufferObject) {

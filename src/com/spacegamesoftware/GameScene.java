@@ -87,7 +87,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private void createSpaceship() {
 		int x = MainActivity.CAMERA_WIDTH / 2;
 		int y = MainActivity.CAMERA_HEIGHT - MainActivity.CAMERA_HEIGHT / 4;
-		spaceship = new Spaceship(x, y, resourceManager.spaceshipRegion, vbom);
+		spaceship = new Spaceship(x, y);
 		attachChild(spaceship);
 	}
 	

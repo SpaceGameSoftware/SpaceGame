@@ -1,6 +1,7 @@
 package com.spacegamesoftware;
 
 import java.io.IOException;
+import java.util.Random;
 
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
@@ -33,7 +34,9 @@ public class ResourceManager {
 	public MainActivity activity;
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
+	public Random rand;
 	public ITextureRegion splashRegion;
+	
 	//main menu
 	public ITextureRegion menuBackgroundRegion;
 	public ITextureRegion newGameRegion;
@@ -88,6 +91,7 @@ public class ResourceManager {
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
 		getInstance().DBHelper = new DataBaseHelper(activity);
+		getInstance().rand = new Random();
 		
 		try {
 			//get info from DB
