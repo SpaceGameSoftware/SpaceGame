@@ -31,7 +31,8 @@ public class AchievementScene extends BaseScene implements IOnMenuItemClickListe
 
 	@Override
 	public void onBackKeyPressed() {
-		achieveChildScene.back();
+		this.disposeScene();
+		SceneManager.getInstance().setScene(SceneManager.SceneType.SCENE_MENU);
 	}
 
 	@Override
@@ -41,8 +42,10 @@ public class AchievementScene extends BaseScene implements IOnMenuItemClickListe
 
 	@Override
 	public void disposeScene() {
-		// TODO Auto-generated method stub
-
+		achieveChildScene.detachChildren();
+		achieveChildScene.dispose();
+		this.detachSelf();
+		this.dispose();
 	}
 
 	private void createBackground() {
