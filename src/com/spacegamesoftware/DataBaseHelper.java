@@ -22,7 +22,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static String DATABASE_NAME = "SpaceGame.db";
 	private static int DATABASE_VERSION = 1;
 	private static long PLAYER_ID = 1;
-	private static int INIT_COINS = 0;
+	private static int INIT_COINS = 1000;
 	private static int INIT_DISTANCE = 0;
 	private static int INIT_SCORE = 0;
 	private static boolean dbCreate = false;
@@ -512,6 +512,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		playerPerk.setId(cursor.getInt(0));
 		playerPerk.setPurchased(cursor.getInt(1));
 		return playerPerk;
+	}
+	
+	public boolean perkBought(int perkId) {
+		String whereClause = String.format("%s = ?", COLUMN_ID);
+		String whereArgs[] = {String.format("%d", perkId)};
+		
+		Cursor cursor = myDataBase.query(TABLE_PLAYER_PERKS,
+				allPlayerPerkColumns, whereClause, whereArgs, null, null, null);		
+		
+		if (cursor.moveToFirst()) {
+			return true;
+		}
+		return false;
 	}
 }
 
