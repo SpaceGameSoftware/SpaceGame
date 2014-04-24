@@ -128,17 +128,20 @@ public class PerkScene extends BaseScene implements IOnMenuItemClickListener {
 	
 	private void buyPerk(int perkId) {
 		PlayerData player = ResourceManager.getInstance().DBHelper.getPlayer();
-		//implement
-		PerkData perk = ResourceManager.getInstance().DBHelper.getPerk(perkId);
-		if ( player.getCoins() >= perk.getValue() ) {
-			int coinBalance = player.getCoins() - perk.getValue();
-			//update coin total in player table
-			ResourceManager.getInstance().DBHelper.updatePlayerTable(player.getId(), 
-					coinBalance, player.getDistance(), player.getScore() );
-			//update perk owned in PlayerPerkData
-			//ResourceManager.getInstance().DBHelper.updatePlayerPerkTable(perkId, 1);
-			ResourceManager.getInstance().DBHelper.insertPlayerPerkTable(perkId, 1);
-			//implement perk in SpaceGameLogic/ResourceManager
+
+		if(!ResourceManager.getInstance().DBHelper.perkBought(perkId)) {
+			PerkData perk = ResourceManager.getInstance().DBHelper.getPerk(perkId);
+			if ( player.getCoins() >= perk.getValue() ) {
+				int coinBalance = player.getCoins() - perk.getValue();
+				//update coin total in player table
+				ResourceManager.getInstance().DBHelper.updatePlayerTable(player.getId(), 
+						coinBalance, player.getDistance(), player.getScore() );
+				//update perk owned in PlayerPerkData
+				//ResourceManager.getInstance().DBHelper.updatePlayerPerkTable(perkId, 1);
+				ResourceManager.getInstance().DBHelper.insertPlayerPerkTable(perkId, 1);
+				//implement perk in SpaceGameLogic/ResourceManager
+				coinsText.setText( String.format("Coins: %d", coinBalance) );
+			}
 		}
 	}
 }

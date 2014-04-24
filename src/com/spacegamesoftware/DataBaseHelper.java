@@ -513,6 +513,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		playerPerk.setPurchased(cursor.getInt(1));
 		return playerPerk;
 	}
+	
+	public boolean perkBought(int perkId) {
+		String whereClause = String.format("%s = ?", COLUMN_ID);
+		String whereArgs[] = {String.format("%d", perkId)};
+		
+		Cursor cursor = myDataBase.query(TABLE_PLAYER_PERKS,
+				allPlayerPerkColumns, whereClause, whereArgs, null, null, null);		
+		
+		if (cursor.moveToFirst()) {
+			return true;
+		}
+		return false;
+	}
 }
 
 
