@@ -22,7 +22,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static String DATABASE_NAME = "SpaceGame.db";
 	private static int DATABASE_VERSION = 1;
 	private static long PLAYER_ID = 1;
-	private static int INIT_COINS = 0;
+	private static int INIT_COINS = 1000;
 	private static int INIT_DISTANCE = 0;
 	private static int INIT_SCORE = 0;
 	private static boolean dbCreate = false;
